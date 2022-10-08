@@ -1,0 +1,97 @@
+{% load static %}
+
+<!--start header -->
+<header>
+    <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+            <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+            </div>
+            <div class="top-menu-left d-none d-lg-block">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="app-fullcalender.html"><i class='bx bx-calendar'></i></a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="top-menu ms-auto">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item mobile-search-icon">
+                        <a class="nav-link" href="#"> <i class='bx bx-search'></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown dropdown-large">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span
+                                class="alert-count">0</span>
+                            <i class='bx bx-bell'></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="javascript:;">
+                                <div class="msg-header">
+                                    <p class="msg-header-title">اعلان ها</p>
+                                    <p class="msg-header-clear ms-auto">علامت گذاری همه به عنوان خوانده شده</p>
+                                </div>
+                            </a>
+
+                            <a href="javascript:;">
+                                <div class="text-center msg-footer">مشاهده همه اعلان ها</div>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown dropdown-large">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span
+                                class="alert-count">0</span>
+                            <i class='bx bx-comment'></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="javascript:;">
+                                <div class="msg-header">
+                                    <p class="msg-header-title">پیغام ها</p>
+                                    <p class="msg-header-clear ms-auto">علامت گذاری همه به عنوان خوانده شده</p>
+                                </div>
+                            </a>
+
+                            <a href="javascript:;">
+                                <div class="text-center msg-footer">مشاهده همه پیغام ها</div>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-box dropdown">
+                <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.is_authenticated %}
+                    {% if request.user.avatar %}
+                    <img style="max-width: 50px; max-height: 50px;"
+                        src="{% static 'media/' %}{{ request.user.avatar }}">
+                    {% else %}
+                    <img style="max-width: 50px; max-height: 50px;" src="{% static 'media/userpic/nonpic/user.png' %}">
+                    {% endif %}
+
+                    <div class="user-info ps-3">
+                        {% if request.user.username %}
+                        <p class="user-name mb-0">{{ request.user.first_name }}</p>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="javascript:;"><i
+                                class='bx bx-dollar-circle'></i><span>درآمد</span></a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider mb-0"></div>
+                    </li>
+                    <li><a class="dropdown-item" href=""><i class='bx bx-log-out-circle'></i><span>خروج</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<!--end header -->

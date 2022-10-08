@@ -1,0 +1,113 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش سوال های مشتریان|
+{% endblock %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+            {% include 'partials/reportmodal.html' %}
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:productsgroupsLV' id=0 %}">داشبورد</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active" aria-current="page">
+                            گزارش سوال های مشتریان</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div style="margin-bottom: 1%;">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link  " href="{% url 'WebSite:ccontactusreport' %}">گزارش
+                                    ارتباط با ما - مرکز
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'WebSite:scontactusreport' %}"> گزارش ارتباط با ما -
+                                    مراکز
+                                    فروش </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'WebSite:customerquestionsreport' %}">گزارش سوال
+                                    های مشتری ها</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class=" border-right" style="display: inline-block;" aria-label="...">
+                            <input id="modelname" type="hidden" value="customerquestions">
+                            <input id="idname" type="hidden" value="example">
+                            <a class="btn btn-danger rounded shadow" id="BtnGprDelete" href="#">حذف گروهی</a>
+                        </div>
+                        <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                            <tr>
+                                <td class="container"
+                                    style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
+                                    گزارش سوال های مشتریان
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="cqdelete table table-striped table-bordered"
+                                        style="width: 100%;">
+                                        <thead>
+                                            <tr class="font-weight-bold text-center">
+                                                <th style="text-align:center;"> <input id="checkAllForm" type="checkbox"
+                                                        class="selectAll " name="selectAll" value="all"></th>
+                                                <th class="text-center">شماره</th>
+                                                <th class="text-center">نام</th>
+                                                <th class="text-center">عنوان سوال</th>
+                                                <th class="text-center">شماره تماس</th>
+                                                <th class="text-center">ایمیل</th>
+                                                <th class="text-center">شرح سوال</th>
+                                                <th class="text-center">کاربر ایجاد کننده</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if cq %}
+                                            {% for result in cq %}
+                                            <tr class="text-center">
+                                                <td></td>
+                                                <td class="text-center">{{ result.id }}</td>
+                                                <td class="text-center">{{ result.name }}</td>
+                                                <td class="text-center">{{ result.title }}</td>
+                                                <td class="text-center">{{ result.tell }}</td>
+                                                <td class="text-center">{{ result.email }}</td>
+                                                <td class="text-center">{{ result.desc }}</td>
+                                                <td class="text-center">{{ result.Create_Uid }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                    </div><!-- End .dashboard -->
+                </div><!-- End .page-content -->
+            </div><!-- End .container -->
+        </div><!-- End .dashboard -->
+    </div><!-- End .page-content -->
+</div><!-- End .page-content -->
+{% endif %}
+{% endif %}
+{% endblock %}

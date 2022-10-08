@@ -1,0 +1,273 @@
+{% load static %}
+
+
+<script>
+
+    function Products() {
+        window.open(
+            '{% url "WebSite:ProductsList" %}');
+    }
+    function ProductsGroups() {
+        window.open(
+            '{% url "WebSite:ProductsGroupsList" %}');
+    }
+    function productscategoryviewreport() {
+        window.open(
+            '{% url "WebSite:ProductsCategoryList" %}');
+    }
+</script>
+
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+            {% comment %}
+            <!-- <div>
+                {% for b in fhlogo %}
+                <a href="{% url 'WebSite:login' %}" class="Logo mt-0 mb-0">
+                    <img src="{% static 'media/' %}{{ b.Logo }}" 
+                        style="width: 50px; height: 40px;">
+                </a>
+                {% endfor %}
+            </div>-->
+            {% endcomment %}
+            <div>
+                <h4 class="logo-text">پنل ادمین</h4>
+            </div>
+
+            <div class="toggle-icon ms-auto"><i class='bx bx-last-page'></i></div>
+        </div>
+        <!--navigation-->
+        
+   
+        <ul class="metismenu" id="menu" >
+            <li>
+                <a href="javascript:;"> 
+                    <div class="parent-icon "><i class='bx bx-user'></i></div>
+                    <div class="menu-title">مدیریت کاربر ها</div>
+                </a>
+                <ul>
+                <li> <a id="tab-orders-link" href="#"
+                    onclick="customersgroup()" role="tab" aria-controls="tab-address"
+                    aria-selected="false"><i class="bx bx-left-arrow-alt"></i>مدیریت
+                    گروه کاربران</a>
+                </li>
+                <li> <a id="tab-orders-link" href="#" onclick="usersreport()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                            class="bx bx-left-arrow-alt"></i>مدیریت لیست کاربر
+                        ها</a>
+                </li>
+                <li>
+                    <a id="tab-orders-link" href="#" onclick="activeusersreport()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                            class="bx bx-left-arrow-alt"></i>مدیریت کاربر های فعال
+                        </a>
+                </li>
+
+                </ul>
+              
+            </li>
+            <li>
+                <a id="tab-dashboard-link" href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-package'></i>
+                    </div>
+                    <div class="menu-title">مدیریت کالا ها</div>
+                </a>
+                <ul>
+                    <li>
+                        <a id="tab-orders-link" onclick="ProductsGroups()"
+                            href="#" role="tab" aria-controls="tab-address"
+                            aria-selected="false">
+                            <i class="bx bx-left-arrow-alt"></i>مدیریت گروه های کالا
+                        </a>
+                    </li>
+                    <li> <a id="tab-orders-link" href="#"
+                        onclick="productscategoryviewreport()" role="tab" aria-controls="tab-address"
+                        aria-selected="false"><i class="bx bx-left-arrow-alt"></i>مدیریت
+                    دسته بندی ها</a>
+                </li>
+                    <li class="nav-item">
+                        <a id="ProductsPage" href="#" onclick="product()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>مدیریت کالا ها
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="tab-orders-link" href="#" onclick="productsparametr()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>مدیریت پارامتر کالا ها</a>
+                    </li>
+                   
+                    
+                    <li class="nav-item">
+                        <a id="tab-orders-link" href="#" onclick="mastertakhfif()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>مدیریت تخفیف ها</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="tab-orders-link" href="#" onclick="commentreport()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>گزارش کامنت های کالا ها</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                    </div>
+                    <div class="menu-title">مدیریت سفارش ها</div>
+                </a>
+                <ul>
+                    <li> <a href="#" onclick="AdminOrders()" id="tab-orders-link"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                            class="bx bx-left-arrow-alt"></i>سفارش های ارسال نشده</a>
+                </li>
+                <li> <a id="tab-orders-link" onclick="AdminSentOrders()"
+                    href="#" role="tab" aria-controls="tab-address"
+                    aria-selected="false"><i class="bx bx-left-arrow-alt"></i>سفارش های ارسال شده</a>
+            </li>
+                    <li> <a id="tab-orders-link" onclick="adminorderscanceled()"
+                            href="#" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>سفارش های کنسل شده</a>
+                    </li>
+                    <li>
+                        <a id="tab-orders-link" href="#" onclick="usersreport()"
+                            role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>  سفارش ها به نفکیک کاربر
+                            </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class="bx bx-carousel"></i>
+                    </div>
+                    <div class="menu-title">مدیریت اسلایدر ها</div>
+                </a>
+                <ul>
+                    <li> <a id="tab-orders-link" data-toggle="tab" href="#"
+                            onclick="slidersreport()" role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>ایجاد
+                            اسلایدر اصلی</a>
+                    </li>
+                    <li> <a id="tab-orders-link" onclick="slidersinsidereport()"
+                            href="#" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>ایجاد اسلایدرهای داخلی</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-command'></i>
+                    </div>
+                    <div class="menu-title">مدیریت لوگو و بنر ها</div>
+                </a>
+                <ul>
+                    <li> <a id="tab-orders-link" href="#" onclick="logoreport()" role="tab"
+                            aria-controls="tab-address" aria-selected="false"><i class="bx bx-left-arrow-alt"></i>ایجاد
+                            لوگو ها</a>
+                    </li>
+                    <li> <a id="tab-orders-link" onclick="bannersreportview()"
+                            href="#" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>ایجاد بنر ها</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-spa'></i>
+                    </div>
+                    <div class="menu-title">مدیریت فوتر اصلی</div>
+                </a>
+                <ul>
+                    <li> <a id="tab-orders-link" href="#" onclick="footerreport()"
+                            role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>
+                            حساب های بانکی </a>
+                    </li>
+                    <li> <a id="tab-orders-link" href="#" onclick="sasreport()" role="tab"
+                            aria-controls="tab-address" aria-selected="false"><i class="bx bx-left-arrow-alt"></i>خدمات
+                            پس از فروش</a>
+                    </li>
+                    <li> <a id="tab-orders-link" onclick="supportreport()" href="#"
+                            role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>اطلاعات پشتیبانی</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"> <i class='bx bx-atom'></i>
+                    </div>
+                    <div class="menu-title">مدیریت ارتباط با ما</div>
+                </a>
+                <ul>
+                    <li> <a id="tab-orders-link" href="#"
+                            onclick="ccontactusreport()" role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>ارتباط با ما - مرکز</a>
+                    </li>
+                    <li> <a id="tab-orders-link" href="#"
+                            onclick="scontactusreport()" role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>ارتباط با ما - فروشگاه ها</a>
+                    </li>
+                    <li> <a id="tab-orders-link" onclick="customerquestionsreport()"
+                            href="#" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>سوال های مشتری ها</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class="bx bx-help-circle"></i>
+                    </div>
+                    <div class="menu-title">مدیریت درباره ما</div>
+                </a>
+                <ul>
+                    <li> <a id="tab-orders-link" href="#" onclick="aboutreport()"
+                            role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>ایجاد اطلاعات درباره
+                            ما</a>
+                    </li>
+                    <li> <a id="tab-orders-link" onclick="aboutteamreport()" href="#"
+                            role="tab" aria-controls="tab-address" aria-selected="false"><i
+                                class="bx bx-left-arrow-alt"></i>ایجاد اطلاعات ما که هستیم</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
+                    </div>
+                    <div class="menu-title">ارتباط با سایر سیستم ها</div>
+                </a>
+                <ul>
+                    <li class="nav-item">
+                        <a id="tab-orders-link" href="#" onclick="customerLV()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>گزارش مشتری
+                            ها</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="tab-orders-link" href="#" onclick="factorreport()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>گزارش فاکتور
+                            ها</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a id="tab-orders-link" href="#" onclick="PayRcvreport()"
+                        role="tab" aria-controls="tab-address" aria-selected="false"><i
+                        class="bx bx-left-arrow-alt"></i>گزارش رسید ها
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+        </ul>
+        <!--end navigation-->
+    </div>
+    <!--end sidebar wrapper -->
+</div>

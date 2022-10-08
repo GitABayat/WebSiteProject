@@ -1,0 +1,137 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} درباره ما|
+{% endblock %}
+
+
+{% block body %}
+
+<div class="page-wrapper">
+    {% include 'partials/header-h2.html' %}
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'WebSite:login' %}">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">تماس با ما</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+        <div class="container-fluid">
+            <div class="page-header page-header-big text-center"
+                style="background-image: url('/static/media/logo/contactus.jpeg')">
+            </div><!-- End .page-header -->
+        </div><!-- End .container -->
+        {% include 'partials/reportmodal.html' %}
+        <div class="page-content pb-0">
+            <div class="container-fluid">
+                <div class="row">
+                    {% if uccontactus %}
+                    {% for cc in uccontactus %}
+                    <div class="col-lg-6 mb-2 mb-lg-0">
+                        <h2 class="title mb-1">اطلاعات تماس</h2><!-- End .title mb-2 -->
+                        <p class="mb-3">{% if cc.callinfo %}{{ cc.callinfo }}{% endif %}</p>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="contact-info">
+                                    <ul class="contact-list">
+                                        <li>
+                                            <i class="fa fa-map"></i>
+                                            آدرس : {% if cc.address %}{{ cc.address }}{% endif %}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-phone"></i>
+                                            <a href="tel:#">تلفن : {% if cc.tell %}{{ cc.tell }}{% endif %}</a>
+                                        </li>
+
+                                        <li>
+                                            <i class="fa fa-mobile"></i>
+                                            <a href="tel:#">تلفن همراه :  {% if cc.mobile %}{{ cc.mobile }}{% endif %}</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-fax"></i>
+                                            <a href="tel:#">فکس :  {% if cc.fax %}{{ cc.fax }}{% endif %}</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-envelope"></i>
+                                            <a href="mailto:#">ایمیل :  {% if cc.email %}{{ cc.email }}{% endif %}</a>
+                                        </li>
+                                    </ul><!-- End .contact-list -->
+                                </div><!-- End .contact-info -->
+                            </div><!-- End .col-sm-7 -->
+
+                            <div class="col-sm-5">
+                                <div class="contact-info">
+                                    <h3>ساعت کار</h3>
+                                    <ul class="contact-list">
+                                        <li>
+                                            <i class="icon-clock-o"></i>
+                                            <span class="text-dark">هر روز از ساعت </span> <br>{% if cc.wtworkstart %}{{ cc.wtworkstart }}{% endif %} صبح
+                                            تا {% if cc.wtworkend %}{{ cc.wtworkend }}{% endif %} عصر
+                                        </li>
+                                    </ul><!-- End .contact-list -->
+                                </div><!-- End .contact-info -->
+                            </div><!-- End .col-sm-5 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .col-lg-6 -->
+                    {% endfor %}
+                    {% endif %}
+                    <div class="col-lg-6 border shadow p-4 " style="background-color:grey; border-radius: 10px;">
+                        <h2 class="text-white fw-bold title mb-1">سوالی دارید؟</h2><!-- End .title mb-2 -->
+                        <p class="text-white fw-bold mb-2">با استفاده از فرم زیر می توانید با ما ارتباط برقرار کنید</p>
+                    
+                       
+                           
+                            <div class="row ">
+                                <div class="col-12">
+                                    <label class="text-white fw-bold col-xl-6 col-lg-6 col-12 float-start">نام </label>
+                                    <label class="text-white fw-bold col-xl-6 col-lg-6 col-12 float-end">آدرس ایمیل</label>
+                                </div><!-- End .col-sm-6 -->
+                                <hr />
+                                <div class="col-12">
+                                    <div class="col-xl-6 col-lg-6 col-12 float-start"><input type="text" id="cqname" style="border-radius: 5px;" class="shadow col-12 p-2"></div>
+                                    <div class="col-xl-6 col-lg-6 col-12 float-end"><input type="email" id="cqemail" style="border-radius: 5px;" class="shadow col-12 p-2"></div>
+                                    
+                                    
+                                </div><!-- End .col-sm-6 -->
+                            </div><!-- End .row -->
+                        
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <label class="text-white fw-bold col-xl-6 col-lg-6 col-12 float-start">شماره تماس</label>
+                                    <label class="text-white fw-bold col-xl-6 col-lg-6 col-12 float-end">موضوع</label>
+                                </div><!-- End .col-sm-6 -->
+                                <hr />
+                                <div class="col-12">
+                                    
+                                    <div class="col-xl-6 col-lg-6 col-12 float-start"><input type="tel" id="cqtell" style="border-radius: 5px;" class="shadow col-12 p-2"></div>
+                                    <div class="col-xl-6 col-lg-6 col-12 float-end"><input type="text" id="cqtitle" style="border-radius: 5px;" class="shadow col-12 p-2"></div>
+                                </div><!-- End .col-sm-6 -->
+                            </div><!-- End .row -->
+                            <hr />
+
+                            <div class="float-start col-12 mb-2 row">
+                                <label class="text-white fw-bold col-12 float-start">پیام</label>
+                                <input type="text" id="cqdesc" style="border-radius: 5px;" class="shadow col-12 p-2">
+                            </div>
+                            <div class="col-12 mb-2 row">
+                                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                                <div class="g-recaptcha " data-sitekey="6LeGJPwgAAAAAIc8NIOByKRcnWB4dbmivA0NAyCs"></div>
+                            </div>
+                            <div class="col-12 float-start mb-2 row">
+                            <input id="cqrequest" type="submit" value="ارسال" style="border-radius: 5px; " 
+                            class="btn btn-success shadow col-xl-6 col-lg-6 col-12">
+                            </div>
+                        
+                    </div><!-- End .col-lg-6 -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+{% include 'partials/footer-small.html' %}
+{% include 'partials/mobile-menu.html' %}
+
+{% endblock %}

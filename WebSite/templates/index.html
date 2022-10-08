@@ -1,0 +1,576 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+
+{{% block title %}
+{{ super }} صفحه اصلی |
+{% endblock %}
+{% load my_templatetag %}
+
+</style>
+{% block body %}
+
+<div class="page-wrapper">
+    {% include 'partials/header-h2.html' %}
+    <div hidden>
+        <select id="color_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="size_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="get_color_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="get_size_id">
+            <option selected value="0">---------</option>
+        </select>
+        <input type="hidden" id="cartpage" value="1">
+    </div>
+    <main class="main ">
+
+
+            {% if sliders %}
+            <div id="carouselExampleIndicators" class="carousel slide mt-5 mb-5" data-ride="carousel" style=" width: 100%; max-height: 500px;">
+                <ul class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" class="active" data-slide-to="0"></li>
+                    {% for h in sliders %}
+                    {% if forloop.counter > 1 %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter }}"></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                <div>
+                    <div class="carousel-inner carousel-position ">
+                        <div class="carousel-item active" style=" width: 100%; ">
+                            <img style="  width: 100%; max-height: 500px;" class="shadow"
+                                src="{% static 'media/' %}{{ sliders.0.FirstPage_Carousel_pic_1 }}" alt="">
+                        </div>
+                        {% for h in sliders %}
+                        {% if forloop.counter > 1 %}
+                        <div class="carousel-item ">
+                            <img style=" width: 100%; max-height: 500px;" class="shadow" src="{% static 'media/' %}{{ h.FirstPage_Carousel_pic_1 }}"
+                                alt="">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">قبلی</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">بعدی</span>
+                    </a>
+                </div>
+
+            </div>
+            {% endif %}
+
+
+            {% for gid_l1 in group_id_level1 %}
+                {% for g_info in gr_list %}
+                    {% if g_info == gid_l1.id %}
+                    {% if gid_l1.group_img %}
+                    <div class="w-100 h-50 p-2">
+                        <img class="w-100" src="{% static 'media/' %}{{ gid_l1.group_img }}">
+                    </div>
+                    {% endif %}
+                        <div class="row mt-2 mb-2 border-bottom p-2" >
+                            <h5 class="bx bxs-plus-square col-xl-10 col-lg-10 col-md-9 col-sm-6 col-6 float-start">{{ gid_l1.Group_Name }}
+                                
+                            </h5>
+                            <a style="border-radius: 5px;"
+                            class="mb-1 p-2 text-center btn btn-outline-secondary fw-bold col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 float-end" 
+                            href="{% url 'WebSite:advancedsearchProducts' gid_l1.id %}">مشاهده همه</a>
+                        </div>
+                    
+                    {% endif %}
+                {% endfor %}
+            <div class="container-fluid">
+                <div class="row">
+                    {% for pl2 in show_all_products %}
+                    {% for gl2 in show_gl2 %}
+                    {% if pl2 and gl2.id == pl2.3 and gl2.gparentid == gid_l1.id %}
+                    <div class="mt-1 mb-1 float-start col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6" style="border-radius: 10px;">
+                        <div class="border card h-100" style="border-radius: 10px;">
+                            <figure class="product-media h-100 bg-light" >
+                                {% for max_min_glevel in max_min_price_info_group_level %}
+                                    {% if max_min_glevel and max_min_glevel.0 == pl2.0 and  0 > max_min_glevel.5  %}
+                                    <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                                {% else %}
+                                    {% if max_min_glevel and max_min_glevel.0 ==  pl2.0 and max_min_glevel.6 != 0 %}
+                                        <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                                    {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                                <a href="{% url 'WebSite:showproduct' pl2.0 pl2.1|urlreplace %}">
+                                    <img src="{% static 'media/' %}{{ pl2.2 }}" style="max-height: 168px; border-radius: 10px;" alt=""
+                                        class="product-image h-100">
+                                        
+                                </a>
+                            </figure><!-- End .product-media -->
+                            <div class="product-body">
+                                <div class="ratings-container">
+                                    {% for sr in StarAvarage_percent %}
+                            
+                                        {% if sr.0 == pl2.0 %}
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: {{ sr.1 }}%;"></div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="ratings-text text-dark">( {{CommentCount}} دیدگاه )</span>
+                                </div><!-- End .rating-container -->
+                                <div class="product-cat  text-dark text-center">
+                                    <a href="{% url 'WebSite:showproduct' pl2.0 pl2.1|urlreplace %}">{{ pl2.1 }}</a>
+                                </div><!-- End .product-cat -->
+                                <!-- End .product-title -->
+                                <div class="product-price mt-2">
+                                    {% for max_min_pg in max_min_price_info_group_level %}
+                                    {% if max_min_pg and max_min_pg.0 == pl2.0 %}
+                                    {% if max_min_pg.6 == 0 %}
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h6">{{ max_min_pg.2|intdot }} ریال</p>
+                                    {% else %}
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-dark h6">{{ max_min_pg.7|intdot }} ریال</p>
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h6">{{ max_min_pg.2|intdot }} ریال</p>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </div><!-- End .product-price -->
+                            </div>
+                        </div><!-- End .product-body -->
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+<div class="intro-section bg-lighter pt-3">
+            <div style=" width: 100%;">
+
+                {% for logo in banner %}
+                {% if forloop.first %}
+                <div class=" banner-group" style=" width: 100%;">
+                    <div class="row" style=" width: 100%;">
+                        <div class="col-lg-5">
+                            {% if logo.group8_id %}
+                            <div class="banner banner-big banner-overlay">
+                                <a href="{% url 'WebSite:advancedsearchProducts' id=logo.group8_id %}"><img
+                                        src="{% static 'media/' %}{{ logo.baner8 }}" class="shadow"
+                                        style="  max-height: 655px;">
+                                </a>
+
+                                <div class="banner-content banner-content-bottom text-right">
+                                    <h4 class="banner-subtitle text-white"><a href="#">پیشنهادهای جدید</a></h4>
+                                    <!-- End .banner-subtitle -->
+                                    <h3 class="banner-title text-white"><a href="#">منتظر تخفیف های ویژه <br>بهاره
+                                            ما باشید</a></h3><!-- End .banner-title -->
+                                    <a href="#" class="banner-link">مشاهده <i class="icon-long-arrow-left"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                            {% endif %}
+                        </div><!-- End .col-lg-5 -->
+
+                        <div class="col-lg-7">
+                            {% if logo.group9_id %}
+                            <div class="banner banner-overlay">
+                                <a href="{% url 'WebSite:advancedsearchProducts' id=logo.group9_id %}"><img
+                                        src="{% static 'media/' %}{{ logo.baner9 }}" class="shadow"
+                                        style=" max-height: 315px;">
+                                </a>
+
+                                <div class="banner-content banner-content-right text-right">
+                                    <h4 class="banner-subtitle text-white"><a href="#">محصولات جدید</a></h4>
+                                    <!-- End .banner-subtitle -->
+                                    <h3 class="banner-title text-white"><a href="#">محصولات جدید <br>تا 50%
+                                            تخفیف</a></h3><!-- End .banner-title -->
+                                    <a href="#" class="banner-link">خرید <i class="icon-long-arrow-left"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    {% if logo.group10_id %}
+                                    <div class="banner banner-overlay">
+                                        <a href="{% url 'WebSite:advancedsearchProducts' id=logo.group10_id %}"><img
+                                                src="{% static 'media/' %}{{ logo.baner10 }}" class="shadow"
+                                                style=" max-height: 317px;">
+                                        </a>
+
+                                        <div class="banner-content banner-content-top text-right">
+                                            <h4 class="banner-subtitle text-white"><a href="#">به زودی</a>
+                                            </h4><!-- End .banner-subtitle -->
+                                            <h3 class="banner-title text-white"><a href="#">این هفته با <br>بیشترین
+                                                    تخفیف</a></h3><!-- End .banner-title -->
+                                            <a href="#" class="banner-link">خرید <i
+                                                    class="icon-long-arrow-left"></i></a>
+                                        </div><!-- End .banner-content -->
+                                    </div><!-- End .banner -->
+                                    {% endif %}
+                                </div><!-- End .col-sm-6 -->
+
+                                <div class="col-sm-6">
+                                    {% if logo.group11_id %}
+                                    <div class="banner banner-overlay">
+                                        <a href="{% url 'WebSite:advancedsearchProducts' id=logo.group11_id %}"></a><img
+                                            src="{% static 'media/' %}{{ logo.baner11 }}" class="shadow"
+                                            style=" max-height: 317px;">
+                                        </a>
+
+                                        <div
+                                            class="banner-content banner-content-top banner-content-reverse text-right">
+                                            <h4 class="banner-subtitle text-white"><a href="#">جدیدترین محصولات</a>
+                                            </h4><!-- End .banner-subtitle -->
+                                            <h3 class="banner-title text-white"><a href="#">لباس های جدید<br>برای
+                                                    بهار</a></h3><!-- End .banner-title -->
+                                            <a href="{% url 'WebSite:advancedsearchProducts' id=logo.group11_id %}"
+                                                class="banner-link">مشاهده <i class="icon-long-arrow-left"></i></a>
+                                        </div><!-- End .banner-content -->
+                                    </div><!-- End .banner -->
+                                    {% endif %}
+                                </div><!-- End .col-sm-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .col-lg-7 -->
+                    </div><!-- End .row -->
+                </div><!-- End .banner-group -->
+                {% endif %}
+                {% endfor %}
+            </div><!-- End .container -->
+
+<div class="container-fluid text-dark fw-bold mt-4">
+    <h2 class="title text-center">محبوب ترین محصولات</h2><!-- End .title -->
+
+    <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active text-dark fw-bold" id="tab-new-link" data-toggle="tab" href="#tab-new" role="tab"
+                aria-controls="tab-new" aria-selected="true">جدید</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link  text-dark fw-bold" id="tab-featured-link" data-toggle="tab" href="#tab-featured" role="tab"
+                aria-controls="tab-featured" aria-selected="false">تخفیف ویژه</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link text-dark fw-bold" id="tab-best-link" data-toggle="tab" href="#tab-best" role="tab"
+                aria-controls="tab-best" aria-selected="false">بیشترین فروش</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-new" role="tabpanel" aria-labelledby="tab-new-link">
+            {% if Latestproducts %}
+            <div class="row">
+                {% for lp in Latestproducts %}
+                    
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6  card h-100">
+                    <div class="product product-4 border" style="border-radius: 10px;">
+                        <figure class="product-media">
+
+                            <div class="col-12">
+                                {% for max_min_latest in max_min_price_info_Latestproducts %}
+                                    {% if max_min_latest and max_min_latest.0 == lp.id and  0 > max_min_latest.5  %}
+                                        <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                                    {% else %}
+                                        {% if max_min_latest and max_min_latest.0 == lp.id and max_min_latest.6 != 0 %}
+                                            <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <a href="{% url 'WebSite:showproduct' lp.id lp.name|urlreplace %}"
+                                style="border-radius: 10px; height: 188px; background: white;">
+                                <img src="{% static 'media/' %}{{ lp.img1 }}" alt="تصویر محصول" class="product-image"
+                                    style="max-height: 188px; border-radius: 10px; max-width: 100%;">
+                                <img src="{% static 'media/' %}{{ lp.img2 }}" alt="تصویر محصول"
+                                    class="product-image-hover "
+                                    style="max-height: 188px; border-radius: 10px; max-width: 100%;">
+                            </a>
+
+                            <div class="product-action-vertical">
+
+                                <a href="{{ lp.sociallink }}" rel="nofollow" target="_blank" title="اینستاگرام"
+                                    class="btn-product-icon btn-expandable">
+                                    <i class="fab fa-instagram"></i><span>انتقال به صفحه اینستاگرام</span></a>
+                                {% comment %}
+                                <!-- <a onclick="addFavorite('{{lp.id}}','{{ lp.name }}','{{lp.img1}}')" href="#"
+                                    class="btn-product-icon btn-wishlist btn-expandable"><span>افزودن به
+                                        لیست علاقه مندی</span></a> -->
+                                {% endcomment %}
+                            </div><!-- End .product-action -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body h-100 p-2 text-center">
+                            {% for sr in StarAvarage_percent %}
+                            {% if sr.0 == lp.id %}
+                            <div class="ratings">
+                                <div class="ratings-val" style="width: {{ sr.1 }}%;"></div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+
+                            <p class="product-title text-center"><a 
+                                    href="{% url 'WebSite:showproduct' lp.id lp.name|urlreplace %}">{{ lp.name }}</a>
+                            </p>
+
+                            <!-- End .product-title -->
+                            <div class="product-price">
+                                {% for max_min_latest in max_min_price_info_Latestproducts %}
+                                {% if max_min_latest and max_min_latest.0 == lp.id %}
+                                {% if max_min_latest.6 == 0 %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h6">{{ max_min_latest.2|intdot }} ریال</p>
+                                {% else %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-dark h6">{{ max_min_latest.7|intdot }} ریال</p>
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h6">{{ max_min_latest.2|intdot }} ریال</p>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </div><!-- End .product-price -->
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                {% endfor %}
+            </div><!-- End .row -->
+            {% endif %}
+        </div><!-- .End .tab-pane -->
+        <div class="tab-pane fade show" id="tab-best" role="tabpanel" aria-labelledby="tab-best-link">
+            {% if bestssale %}
+            <div class="row ">
+                {% for bs in bestssale %}
+
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 card h-100">
+                    <div class="product product-4 border" style="border-radius: 10px;">
+                        <figure class="product-media">
+
+                            <div class="col-12">
+                                {% for max_min_best in max_min_price_info_bestsell %}
+                                    {% if max_min_best and max_min_best.0 == bs.id and  0 > max_min_best.5  %}
+                                        <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                                    {% else %}
+                                        {% if max_min_best and max_min_best.0 == bs.id and max_min_best.6 != 0 %}
+                                            <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <a href="{% url 'WebSite:showproduct' bs.id bs.name|urlreplace %}"
+                                style="border-radius: 10px; height: 188px; background: white;">
+                                <img src="{% static 'media/' %}{{ bs.img1 }}" alt="تصویر محصول" class="product-image"
+                                    style="max-height: 188px; border-radius: 10px; max-width: 100%;">
+                                <img src="{% static 'media/' %}{{ bs.img2 }}" alt="تصویر محصول"
+                                    class="product-image-hover "
+                                    style="max-height: 188px; border-radius: 10px; max-width: 100%;">
+
+                            </a>
+
+                            <div class="product-action-vertical">
+
+                                <a href="{{ bs.sociallink }}" rel="nofollow" target="_blank" title="اینستاگرام"
+                                    class="btn-product-icon btn-expandable"><i class="fab fa-instagram"></i><span>انتقال
+                                        به صفحه اینستاگرام</span></a>
+
+                                <a onclick="addFavorite({{bs.id}},'{{ bs.name }}','{{bs.img1}}')" href="#"
+                                    class="btn-product-icon btn-wishlist btn-expandable"><span>افزودن به
+                                        لیست علاقه مندی</span></a>
+
+
+                            </div><!-- End .product-action -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body text-center">
+
+                            {% for sr in StarAvarage_percent %}
+                            {% if sr.0 == bs.id %}
+                            <div class="ratings ">
+                                <div class="ratings-val" style="width: {{ sr.1 }}%;"></div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+
+                            <p class="product-title text-center"><a 
+                                    href="{% url 'WebSite:showproduct' bs.id bs.name|urlreplace %}">{{ bs.name }}</a>
+                                </h3>
+                                <!-- End .product-title -->
+                            <div class="product-price">
+                                {% for max_min_best in max_min_price_info_bestsell %}
+                                {% if max_min_best and max_min_best.0 == bs.id %}
+                                {% if max_min_best.6 == 0 %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h6">{{ max_min_best.2|intdot }} ریال</p>
+                                {% else %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-dark h6">{{ max_min_best.7|intdot }} ریال</p>
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h6">{{ max_min_best.2|intdot }} ریال</p>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+
+                            </div><!-- End .product-price -->
+
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                {% endfor %}
+            </div><!-- End .row -->
+            {% endif %}
+
+        </div><!-- .End .tab-pane -->
+    </div><!-- End .tab-content -->
+
+    <div class="mb-3"></div><!-- End .mb-6 -->
+</div><!-- End .container -->
+{% comment %}
+<!-- <div class="cta bg-image bg-dark pt-4 pb-5" style="background-image: url(static/assets/images/demos/demo-17/bg-1.jpg);">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 col-md-8 col-lg-6">
+                <div class="cta-heading text-center">
+                    <h3 class="cta-title text-white">عضویت در خبرنامه و دریافت 25% تخفیف </h3>
+                    <p class="cta-desc text-white">با عضویت در خبرنامه از جدیدترین محصولات و تخفیف ها باخبر
+                        شوید
+                    </p>
+                </div>
+
+                <form action="#">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="آدرس ایمیل خود را وارد کنید"
+                            aria-label="Email Adress" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit"><span>عضویت</span><i
+                                    class="icon-long-arrow-left"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endcomment %}
+
+{% if khabar %}
+<div class="blog-posts">
+    <div class="container-fluid">
+
+        <div class="heading text-center">
+            <h2 class="title text-center">جدیدترین اخبار</h2><!-- End .title -->
+
+        </div><!-- End .heading -->
+        
+        <div class="owl-carousel owl-simple mb-4" data-toggle="owl" data-owl-options='{
+                            "nav": false, 
+                            "dots": true,
+                            "items": 3,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "600": {
+                                    "items":2
+                                },
+                                "992": {
+                                    "items":3
+                                },
+                                "1200": {
+                                    "items":3,
+                                    "nav": true,
+                                    "dots": false
+                                }
+                            }
+                        }'>
+            <article class="entry">
+                <figure class="entry-media">
+                    <a href="{% url 'WebSite:lastnewspageone' kh.id %}">
+                        <img src="{% static 'media/' %}{{ kh.newsimg }}" alt="توضیحات عکس">
+                    </a>
+                </figure><!-- End .entry-media -->
+
+                <div class="entry-body text-right">
+                    <div class="entry-meta" dir="rtl">
+                        <a href="{% url 'WebSite:lastnewspageone' kh.id %}">{{ kh.title }}</a>
+                    </div><!-- End .entry-meta -->
+
+                    <h3 class="entry-title">
+                        <a href="{% url 'WebSite:lastnewspageone' kh.id %}">{{ kh.khdesc }}</a>
+                    </h3><!-- End .entry-title -->
+
+                    <div class="entry-content">
+                        <a href="{% url 'WebSite:lastnewspage' %}" class="read-more">خواندن بیشتر</a>
+                    </div><!-- End .entry-content -->
+                </div><!-- End .entry-body -->
+            </article><!-- End .entry -->
+
+        </div>
+        
+        <div class="more-container text-center">
+            <a href="{% url 'WebSite:lastnewspage' %}" class="btn btn-outline-darker btn-more"><span>مشاهده اخبار
+                    بیشتر</span><i class="icon-long-arrow-left"></i></a>
+        </div><!-- End .more-container -->
+
+        <hr class="mb-5">
+    </div><!-- End .container -->
+</div><!-- End .blog-posts -->
+{% endif %}
+
+{% if aboutus_info %}
+<div class="container-fluid">
+    <div class="heading text-center">
+        <h2 class="title text-center">درباره اعضای گروه ما</h2><!-- End .title -->
+    </div><!-- End .heading -->
+    
+
+    <div class="owl-carousel owl-simple" data-toggle="owl" data-owl-options='{
+                        "nav": false, 
+                        "dots": false,
+                        "items": 5,
+                        "margin": 20,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "360": {
+                                "items":2
+                            },
+                            "600": {
+                                "items":3
+                            },
+                            "992": {
+                                "items":4
+                            },
+                            "1200": {
+                                "items":5
+                            }
+                        }
+                    }'>
+        {% for info in aboutus_info %}
+        <div class="instagram-feed">
+            <img src="{% static 'media/' %}{{ info.personelimg }}" alt="img">
+
+            <div class="instagram-feed-content">
+                <a href="#"><i class="icon-heart-o"></i>{{ info.pposision }}</a>
+                <a href="#"><i class="icon-comments"></i>{{ info.ptitle }}</a>
+            </div><!-- End .instagram-feed-content -->
+        </div><!-- End .instagram-feed -->
+        {% endfor %}
+
+    </div><!-- End .owl-carousel -->
+   
+</div><!-- End .container-fluid -->
+{% endif %}
+</main><!-- End .main -->
+
+{% include 'partials/footer-small.html' %}
+{% include 'partials/mobile-menu.html' %}
+
+</div>
+{% endblock %}

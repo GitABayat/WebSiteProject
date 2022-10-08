@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<div class="wrapper">
+    <div class="page-wrapper">
+        <div class="page-content">
+            
+            <div class="modal fade" id="CreateProductsCategory" aria-hidden="true" style="z-index: 100000000;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                ایجاد دسته بندی کالا
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+
+                                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                                <tr>
+                                                    <td class="container fw-bold text-start h5 p-2">
+                                                        ایجاد دسته بندی های کال ها
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <input id="ErrorResult" type="hidden"
+                                                value="{% if ErrorResult %}{% for h in ErrorResult %}{{ h }}{% endfor %}{% endif %}">
+                                            <input id="ErrorText" type="hidden"
+                                                value="{% if ErrorText %}{% for t in ErrorText %}{{ t }}{% endfor %}{% endif %}">
+
+                                            {% csrf_token %}
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام دسته بندی
+                                                    </td>
+                                                    <td>
+                                                        <input id="cname" type="text"
+                                                            class="form-control" required>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        توضیح
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" type="text"
+                                                            id="cdesc">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="modal-footer">
+                                                <input name="model" id="ModelName" type="hidden" value="Productscategory">
+                                                <input name="rowid" id="rowid" type="hidden" value="0">
+                                                <input name="SerializersName" id="SerializersName" type="hidden"
+                                                    value="ProductsCategorySerializers">
+
+
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">بستن</button>
+                                                <input id="BtnCreateURL" type="hidden" value="Create">
+                                                <button id="BtnCreateSave" class="btn btn-success" type="button"
+                                                    data-bs-dismiss="modal">ذخیره</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="UpdateProductsCategory" aria-hidden="true" style="z-index: 100000000;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                ویرایش دسته بندی کالا
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+
+                                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                                <tr>
+                                                    <td class="container fw-bold text-start h5 p-2">
+                                                        ویراشی دسته بندی های کال ها
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <input id="ErrorResult" type="hidden"
+                                                value="{% if ErrorResult %}{% for h in ErrorResult %}{{ h }}{% endfor %}{% endif %}">
+                                            <input id="ErrorText" type="hidden"
+                                                value="{% if ErrorText %}{% for t in ErrorText %}{{ t }}{% endfor %}{% endif %}">
+
+                                            {% csrf_token %}
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام دسته بندی
+                                                    </td>
+                                                    <td>
+                                                        <input id="UCname" type="text"
+                                                            class="form-control" required>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        توضیح
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" type="text"
+                                                            id="UCdesc">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="modal-footer">
+
+                                                <input name="model" id="ModelName" type="hidden" value="Productscategory">
+                                                <input name="rowid" id="rowid" type="hidden" value="0">
+                                                <input name="SerializersName" id="SerializersName" type="hidden"
+                                                    value="ProductsCategorySerializers">
+                                                <input id="BtnUpdateURL" type="hidden" value="Update">
+                                                <input id="UpdateRorwID" type="hidden" value="0">
+
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+
+                                                
+                                                <button id="BtnUpdateSave" class="btn btn-success" type="button"
+                                                    data-bs-dismiss="modal">ذخیره</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+           
+            <div class="modal fade" id="MasterTabbleShowDetail" aria-hidden="true">
+
+                <div class="modal-dialog modal-xl">
+
+                    
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                نمایش دسته بندی های زیرمجموعه
+                            </h5>
+                            
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <p id="CreateBreedCrumb" class="bg-light m-3 radius-10 border " style="background-color: grey;">
+                            
+                        </p>
+                        <div class="modal-body table-responsive">
+                            
+                            <input class="idname" type="hidden" value="MasterTableDetail">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="MasterTableDetail" class="display" style="width: 100%;">
+
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" id="SelectAll"><input id="SelectAllInput"
+                                                        type="checkbox" class="select-checkbox"></th>
+                                                <th class="text-center">کلید ها</th>
+                                                <th class="text-center">کد</th>
+                                                <th class="text-center">نام</th>
+                                                <th class="text-center">کد بالادستی</th>
+                                                <th class="text-center">شرح دسته بندی</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .container -->
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

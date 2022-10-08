@@ -1,0 +1,76 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+{% load my_templatetag %}
+
+{% block title %}
+{{ super }} گزارش قیمت محصول|
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+            
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active" aria-current="page">
+                            گزارش قیمت محصول ها</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <table class=" col-12 border-bottom mt-5 mb-3">
+                        <tr>
+                            <td class="container fw-bold text-dark text-start h6 ">
+                                گزارش تخفیف های ایجاد شده
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <div >
+                                
+                                <table id="mastertakhfif"  style="width: 100%;">
+                                    <thead>
+                                        <tr class="font-weight-bold text-center">
+                                            <th style="text-align:center;"> 
+                                            <input id="checkAllForm" type="checkbox" class="selectAll" name="selectAll" value="all">
+                                            </th>
+                                            <th class="text-center">شماره</th>
+                                            <th class="text-center">کلید ها</th>
+                                            <th class="text-center">روش تخفیف</th>
+                                            <th class="text-center">نوع تخفیف</th>
+                                            <th class="text-center">کالا</th>
+                                            <th class="text-center">گروه کالا</th>
+                                            <th class="text-center">مبلغ تخفیف</th>
+                                            <th class="text-center">درصد تخفیف</th>
+                                            <th class="text-center">رنگ کالا</th>
+                                            <th class="text-center">سایز کالا</th>
+                                            <th class="text-center">توضیح</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       
+                                    </tbody>
+                                </table>
+                            </div><!-- End .col-lg-9 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </div><!-- End .container -->
+    </div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+{% endif %}
+{% endif %}
+{% endblock %}

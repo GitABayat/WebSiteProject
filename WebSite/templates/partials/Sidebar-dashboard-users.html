@@ -1,0 +1,133 @@
+{% load static %}
+{% if user.is_authenticated %}
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+            {% comment %}
+            <!-- <div>
+                {% for b in fhlogo %}
+                <a href="{% url 'WebSite:login' %}" class="Logo mt-0 mb-0">
+                    <img src="{% static 'media/' %}{{ b.Logo }}" 
+                        style="width: 50px; height: 40px;">
+                </a>
+                {% endfor %}
+            </div>-->
+            {% endcomment %}
+            <div>
+                <h4 class="logo-text">پنل کاربری</h4>
+            </div>
+
+            <div class="toggle-icon ms-auto"><i class='bx bx-last-page'></i>
+            </div>
+        </div>
+        <!--navigation-->
+        <ul class="metismenu" id="menu">
+            <li>
+                <a id="tab-dashboard-link" href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-home'></i>
+                    </div>
+                    <div class="menu-title">داشبورد</div>
+                </a>
+                <ul>
+
+                    <li>
+                        <a onclick="formdetailsOpen()" id="tab-orders-link" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>
+                            تغییر کلمه عبور
+                            <script>
+                                var Window;
+                                function formdetailsOpen() {
+                                    Window = window.open(
+                                        "/dashboard/User/ChangePassword/",
+                                        "_blank", "width=700, height=400,position=relative; top=10%; left=-20%;");
+                                }
+                            </script>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="userinfochangeOpen()" id="tab-orders-link" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>
+                            تغییر اطلاعات حساب کاربری
+                            <script>
+                                var Window;
+                                function userinfochangeOpen() {
+
+                                    Window = window.open(
+                                        "{% url 'WebSite:userchangeinfo' %}",
+                                        "_blank", "width=1000, height=900,position=relative; top=10%; left=-20%;");
+                                }
+                            </script>
+                        </a>
+                    </li>
+                </ul>
+                {% comment %}
+            <!-- 
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                    </div>
+                    <div class="menu-title">مدیریت سفارش ها</div>
+                </a>
+                <ul>
+                    <li>
+                        <a onclick="userorders()" id="tab-orders-link" style="border-radius: 5px;" aria-selected="false"
+                            role="tab" aria-controls="tab-address"><i class="bx bx-left-arrow-alt"></i>سفارشات
+                            <script>
+                                var Window;
+                                function userorders() {
+                                    Window = window.open(
+                                        "{% url 'WebSite:userorders' %}",
+                                        "_blank", "width=1300, height=700,position=relative; top=10%; left=-20%;");
+                                }
+                            </script>
+
+                        </a>
+
+
+                        <a onclick="usersarticleOpen()" id="tab-orders-link" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>
+                            نمایش ریز اقلام فاکتور ها
+                            <script>
+                                var Window;
+                                function usersarticleOpen() {
+                                    Window = window.open(
+                                        "{% url 'WebSite:usersarticle' %}",
+                                        "_blank", "width=1300, height=700,position=relative; top=10%; left=-20%;");
+                                }
+                            </script>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <div class="parent-icon"><i class="bx bx-grid-alt"></i>
+                    </div>
+                    <div class="menu-title">مدیریت رسید ها</div>
+                </a>
+                <ul>
+                    <li>
+                        <a onclick="userspayarticleOpen()" id="tab-orders-link" role="tab" aria-controls="tab-address"
+                            aria-selected="false"><i class="bx bx-left-arrow-alt"></i>
+                            نمایش ریز اقلام رسید ها
+                        </a>
+                        <script>
+                            var Window;
+                            function userspayarticleOpen() {
+                                Window = window.open(
+                                    "{% url 'WebSite:userspayarticle' %}",
+                                    "_blank", "width=1300, height=700,position=relative; top=10%; left=-20%;");
+                            }
+                        </script>
+                        </a>
+                    </li>
+                </ul>
+            </li> -->
+            {% endcomment %}
+        </ul>
+    </div>
+</div>
+
+{% endif %}

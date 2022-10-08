@@ -1,0 +1,123 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+{% load my_templatetag %}
+
+{% block title %}
+{{ super }} نتیجه جستجو|
+{% endblock %}
+
+
+
+{% block body %}
+<div class="page-wrapper">
+    {% include 'partials/header-h2.html' %}
+    <div hidden>
+        <select id="color_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="size_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="get_color_id">
+            <option selected value="0">---------</option>
+        </select>
+        <select id="get_size_id">
+            <option selected value="0">---------</option>
+        </select>
+        <input type="hidden" id="cartpage" value="1">
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container-fluid border-bottom border-black">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="font-weight-bold" href="{% url 'WebSite:login' %}">خانه</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" class="font-weight-bold">
+                    کالای جستجو شده</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+    <div class="container-fluid">
+        <div id="empty_search_result" class="row">
+            {% if result and result != 0 %}
+
+            {% for pl in result %}
+
+            <div class="mt-1 mb-1 float-start col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6" style="border-radius: 10px;">
+                <div class="border card h-100" style="border-radius: 10px;">
+                    <figure class="product-media h-100 bg-light" >
+                        {% for result_products in result_products %}
+                        {% if result_products.id == pl.pid_id %}
+                        <a href="{% url 'WebSite:showproduct' result_products.id result_products.name|urlreplace %}">
+                            <img src="{% static 'media/' %}{{ result_products.img1 }}" style="max-height: 168px; border-radius: 10px;" alt=""
+                            class="product-image h-100">
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="col-12">
+                            {% for max_min_result in max_min_price_info_result %}
+                            {% if max_min_result and max_min_result.0 == pl.id and 0 > max_min_result.6 %}
+                            <span style="border-radius: 5px;"
+                                class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                            {% else %}
+                            {% if max_min_result and max_min_result.0 == pl.id and max_min_result.3 != 0 %}
+                            <span style="border-radius: 5px;"
+                                class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                    </figure><!-- End .product-media -->
+                    
+                    <div class="product-body text-center">
+                        <div class="ratings-container text-center">
+                            <span class="ratings-text text-left">( {{CommentCount}} دیدگاه )</span>
+                            {% for result_products in result_products %}
+                            {% if result_products.id == pl.pid_id %}
+                            <div class="ratings text-center">
+                                <div class="ratings-val text-center" style="width: {{ result_products.StarAvarage }}%;"></div>
+                                <!-- End .ratings-val -->
+                            </div><!-- End .ratings -->
+                            {% endif %}
+                            {% endfor %}
+                        </div><!-- End .rating-container -->
+                        {% for result_products in result_products %}
+                        {% if result_products.id == pl.pid_id %}
+                        <h3 class="product-title fw-bold text-dark text-center"><a
+                                href="{% url 'WebSite:showproduct' result_products.id result_products.name|urlreplace %}">
+                                {{ result_products.name }}</a></h3>
+                        {% endif %}
+                        {% endfor %}
+                        <!-- End .product-title -->
+                        <div class="product-price col-12">
+                            {% for max_min_result in max_min_price_info_result %}
+                            {% if max_min_result and max_min_result.0 == pl.id %}
+                            {% if max_min_result.6 == 0 %}
+                            <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h6">{{ max_min_result.2|intdot }} ریال</p>
+                            {% else %}
+                            <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-dark h6">
+                                {{ max_min_result.7|intdot }} ریال</p>
+                            <p
+                                class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h6">
+                                {{ max_min_result.2|intdot }} ریال</p>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center col-12" style="font-size: medium; font-weight: bold; background-color: whitesmoke;">
+                کاربر گرامی کالای مورد
+                نظر یافت نشد .</p>
+            {% endif %}
+        </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+    </div><!-- End .products -->
+</div>
+
+{% include 'partials/footer-small.html' %}
+{% include 'partials/mobile-menu.html' %}
+{% endblock %}

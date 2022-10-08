@@ -1,0 +1,90 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش سفارش های کنسل شده|
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a href="{% url 'WebSite:productsgroupsLV' id=0 %}">داشبورد</a></li>
+                        </li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active"  aria-current="productsgroupsLV">گزارش سفارش های کنسل شده </li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div style="margin-bottom: 1%;">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link " href="{% url 'WebSite:adminorders' %}">گزارش سفارش های
+                                   ارسال نشده </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="{% url 'WebSite:adminsentorders' %}">گزارش سفارش
+                                    های ارسال شده</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'WebSite:adminorderscanceled' %}">گزارش سفارش
+                                    های کنسل شده</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                    <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                        <tr>
+                            <td class="container"
+                                style="text-align: right; padding: 1%; font-size: larger; font-weight: bolder;">
+                                گزارش سفارش های کنسل شده
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="card">
+                        <div class="card-body">
+                                <table id="adminorderscanceled" style="width: 100%;">
+                                    <thead>
+                                        <tr class="font-weight-bold">
+                                            <th style="text-align:center;"> <input type="checkbox" class="selectAll "
+                                                    name="selectAll" value="all">
+                                            </th>
+                                            <th >کد پیگیری</th>
+                                            <th >تاریخ</th>
+                                            <th >نام مشتری</th>
+                                            <th >مبلغ</th>
+                                            <th >شماره تماس</th>
+                                            <th >ایمیل</th>
+                                            <th >آدرس</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                           
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </div><!-- End .container -->
+    </div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+{% endif %}
+{% endif %}
+{% endblock %}

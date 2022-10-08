@@ -1,0 +1,699 @@
+{% load static %}
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<script>
+    $(document).ready(function () {
+
+        // Open Create Modal form
+        $('#BtnCreate').click(function () {
+            var Crekeyid = document.getElementById('CreateKeyID').value
+            $("#" + Crekeyid).modal('show');
+        })
+
+        // Open Create Modal form for SubRows
+        $('#MasterTable tbody, #MasterTableDetail tbody').on('click', 'a#BtnParamCreate', function () {
+            var ModelName = document.getElementById('ModelName').value
+            $("#MasterTable .selected td:first-child, #MasterTableDetail .selected td:first-child").each(function () {
+                var row = $(this).closest("tr")[0];
+                if (row.cells[2].innerHTML) {
+                    var rowid = + row.cells[2].innerHTML
+                }
+                if (ModelName == 'ProductsGroups') {
+                    document.getElementById('rowid').value = rowid
+                    $('#CreateProductsGroups').modal('show')
+                } else if (ModelName == 'Productscategory') {
+                    document.getElementById('rowid').value = rowid
+                    $('#CreateProductsCategory').modal('show')
+                } else if (ModelName == 'Products') {
+                    document.getElementById('rowid').value = rowid
+                    $('#CreateProductsParametrs').modal('show')
+                }
+            })
+        })
+
+        // Create Products Parametrs
+        // Part 1: Choise To Select .
+        $('#CreatePorductsParam').click(function () {
+            rowid = $('#rowid').val()
+            chinput = []
+            for (var checkedinput of $('input.CategoryForSelect')) {
+                if (checkedinput.checked == true) {
+                    chinput.push(checkedinput.value)
+                }
+            }
+            $.ajax({
+                url: '{% url "WebSite:CreateProductsParametrs" %}',
+                data: {
+                    'chinput': String(chinput),
+                    'rowid': rowid
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (parseInt(data.errorhtml) !== 0) {
+                            $('#errortext').html(data.texterrorhtml)
+                            $('#ParamCreateError').modal('show')
+                    } else {
+                        $.ajax({
+                            url: '{% url "WebSite:ShowResultOfParamCreate" %}',
+                            data: {
+                                'chinput': String(chinput),
+                                'rowid': data.rowid
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#ParametrsThatCreated').append(data.htmlheader + data.html + data.htmlfooter)
+                                $('#CreatePorductsParamFinalSave').removeAttr('disabled')
+                            }
+                        })
+                    }
+                }
+            })
+        })
+
+        // Show Param Info When Admin Reopen Rows Info in Products Create Parametrs Modal
+        $('#MasterTable tbody, #MasterTableDetail tbody').on('click', 'a#BtnParamCreate', function () {
+            $('#ParametrsThatCreated').empty()
+            $("#MasterTable .selected td:first-child, #MasterTableDetail .selected td:first-child").each(function () {
+                var row = $(this).closest("tr")[0];
+                if (row.cells[2].innerHTML) {
+                    var rowid = + row.cells[2].innerHTML
+                }
+                $.ajax({
+                    url: '{% url "WebSite:ShowResultOfParamCreate" %}',
+                    data: {
+                        'rowid': rowid
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#ParametrsThatCreated').html(data.htmlheader + data.html + data.htmlfooter)
+                        $('#CreatePorductsParamFinalSave').removeAttr('disabled')
+
+                    }
+                })
+            })
+        });
+
+        $('#DeletePorductsParam').click(function () {
+            $('#DeleteConfirm').modal('show');
+            $('#DeleteConfirmContent').html('آیا با حذف رکورها موافق هستید ?')
+            $('#DeleteConfirmIsOK').click(function () {
+                var model = document.getElementById('ModelName').value
+                $.ajax({
+                    url: '{% url "WebSite:DeleteParametrs" %}',
+                    data: {
+                        'model': model
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#reportmodal').modal('show')
+                        $('#reportmodalcontentText').html(data.html)
+                        $('#reportmodalcontent').html('عملیات حذف بدون خطا انجام گردید .')
+                        $('#' + SeletedID).DataTable().ajax.reload();
+                    }
+                })
+            })
+        })
+ 
+
+    // Show Info in Update Form
+    $('#MasterTable tbody, #MasterTableDetail tbody').on('click', 'a#BtnEdit', function () {
+        $("#MasterTable .selected td:first-child, #MasterTableDetail .selected td:first-child").each(function () {
+            var row = $(this).closest("tr")[0];
+            if (row.cells[2].innerHTML) {
+                var rowid = + row.cells[2].innerHTML
+            }
+
+            $.ajax({
+                url: '{% url "WebSite:getModelInfoForUpdate" %}',
+                data: {
+                    'rowid': rowid,
+                    'model': ModelName,
+                    'RedirectURL': RedirectURL
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var Upkeyid = document.getElementById('UpdateKeyID').value
+                    $("#" + Upkeyid).modal('show');
+
+                    if (ModelName === 'Products') {
+                        document.getElementById('UPName').value = data.result.name
+                        document.getElementById('UPSerial').value = data.result.serial
+                        $("select#UPGroup option[value='0']").remove()
+                        $("select#UPGroupOrders option[selected ='selected']").removeAttr('data-select2-id').removeAttr('selected')
+                        $("select#UPGroup option[value='" + data.result.group_id + "']").attr('selected', true)
+                        document.getElementById('UPPriceorg').value = data.result.priceorg
+                        document.getElementById('UPSociallink').value = data.result.sociallink
+                        document.getElementById('UPDesc').value = data.result.desc
+                        document.getElementById('rowid').value = data.result.id
+                    }
+                    else if (ModelName === 'ProductsGroups') {
+                        document.getElementById('UPGroup_Name').value = data.result.Group_Name
+                        $("select#UPGroupOrders option[value='0']").remove()
+                        $("select#UPGroupOrders option[selected ='selected']").removeAttr('data-select2-id').removeAttr('selected')
+                        $("select#UPGroupOrders option[value='" + data.result.GroupOrders + "']").attr('selected', true)
+                        document.getElementById('UPGroup_Desc').value = data.result.Group_Desc
+                        document.getElementById('UpdateRorwID').value = data.result.id
+                    }
+                    else if (ModelName === 'Productscategory') {
+                        document.getElementById('UCname').value = data.result.cname
+                        document.getElementById('UCdesc').value = data.result.cdesc
+                        document.getElementById('UpdateRorwID').value = data.result.id
+                    }
+                },
+            })
+        })
+    });
+
+    var ErrorResult = document.getElementById('ErrorResult').value
+    var ErrorText = document.getElementById('ErrorText').value
+    if (ErrorResult.length !== 0 && ErrorResult !== 'undefined') {
+        $('#reportmodal').modal('show')
+        $('#reportmodalcontent').html(ErrorResult)
+        $('#reportmodalcontentText').html(ErrorText)
+    }
+
+    // Save After Complite Create Form
+    $('#BtnCreateSave').click(function () {
+        var modelname = document.getElementById('ModelName').value
+        var SeletedID = document.getElementById('idname').value
+        var BtnCreateURL = document.getElementById('BtnCreateURL').value
+        var rowid = document.getElementById('rowid').value
+        var SerializersName = document.getElementById('SerializersName').value
+
+        if (modelname === 'ProductsGroups') {
+            gname = document.getElementById('Group_Name').value
+            gdesc = document.getElementById('Group_Desc').value
+            var gorder = 0;
+            for (var group_order of document.getElementById("GroupOrders").options) {
+                if (group_order.selected) {
+                    gorder = group_order.value;
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnCreateURL + '/',
+                data: {
+                    'Group_Name': gname,
+                    'GroupOrders': gorder,
+                    'Group_Desc': gdesc,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                }
+            })
+
+        } else if (modelname === 'Products') {
+            PName = document.getElementById('PName').value
+            PSerial = document.getElementById('PSerial').value
+            PPriceorg = document.getElementById('PPriceorg').value
+            PSociallink = document.getElementById('PSociallink').value
+            PDesc = document.getElementById('PDesc').value
+            var PGroup = 0;
+            for (var p_group of document.getElementById("PGroup").options) {
+                if (p_group.selected) {
+                    PGroup = p_group.value;
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnCreateURL + '/',
+                data: {
+                    'name': PName,
+                    'serial': PSerial,
+                    'group': PGroup,
+                    'priceorg': PPriceorg,
+                    'desc': PDesc,
+                    'sociallink': PSociallink,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                }
+            })
+
+        } else if (modelname === 'Productscategory') {
+            cname = document.getElementById('cname').value
+            cdesc = document.getElementById('cdesc').value
+
+            $.ajax({
+                url: '/' + BtnCreateURL + '/',
+                data: {
+                    'cname': cname,
+                    'cdesc': cdesc,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                }
+            })
+
+        }
+    })
+
+    // Update After Complite Form
+    $('#BtnUpdateSave').click(function () {
+        var modelname = document.getElementById('ModelName').value
+        var SeletedID = document.getElementById('idname').value
+        var BtnUpdateURL = document.getElementById('BtnUpdateURL').value
+        var rowid = document.getElementById('UpdateRorwID').value
+        var SerializersName = document.getElementById('SerializersName').value
+
+
+        if (modelname === 'ProductsGroups') {
+            SeletedID = document.getElementById('idname').value
+            gname = document.getElementById('UPGroup_Name').value
+            gdesc = document.getElementById('UPGroup_Desc').value
+            var gorder = 0;
+            for (var group_order of document.getElementById("UPGroupOrders").options) {
+                if (group_order.selected) {
+                    gorder = group_order.value;
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnUpdateURL + '/',
+                data: {
+                    'Group_Name': gname,
+                    'GroupOrders': gorder,
+                    'Group_Desc': gdesc,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                    $('#MasterTableDetail').DataTable().ajax.reload();
+                }
+            })
+
+        } else if (modelname === 'Products') {
+            PName = document.getElementById('UPName').value
+            PSerial = document.getElementById('UPSerial').value
+            PPriceorg = document.getElementById('UPPriceorg').value
+            PSociallink = document.getElementById('UPSociallink').value
+            PDesc = document.getElementById('UPDesc').value
+            var PGroup = 0;
+            for (var p_group of document.getElementById("UPGroup").options) {
+                if (p_group.selected) {
+                    PGroup = p_group.value;
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnUpdateURL + '/',
+                data: {
+                    'name': PName,
+                    'serial': PSerial,
+                    'group': PGroup,
+                    'priceorg': PPriceorg,
+                    'desc': PDesc,
+                    'sociallink': PSociallink,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                }
+            })
+        } else if (modelname === 'Productscategory') {
+            cname = document.getElementById('UCname').value
+            cdesc = document.getElementById('UCdesc').value
+
+            $.ajax({
+                url: '/' + BtnUpdateURL + '/',
+                data: {
+                    'cname': cname,
+                    'cdesc': cdesc,
+                    'model': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#' + SeletedID).DataTable().ajax.reload();
+                }
+            })
+        }
+    })
+
+    // Delete Function
+    $('#BtnGprDelete').click(function () {
+        var SeletedID = document.getElementById('idname').value
+        $("#" + SeletedID + " .selected td:first-child").each(function () {
+            var row = $(this).closest("tr")[0];
+            if (row.cells[2].innerHTML) {
+                var rowid = + row.cells[2].innerHTML
+            }
+            $('#DeleteConfirm').modal('show');
+            $('#DeleteConfirmContent').html('آیا با حذف رکورها موافق هستید ?')
+            $('#DeleteConfirmIsOK').click(function () {
+                var model = document.getElementById('ModelName').value
+                $.ajax({
+                    url: '{% url "WebSite:Delete" %}',
+                    data: {
+                        'rowid': rowid,
+                        'model': model
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#reportmodal').modal('show')
+                        $('#reportmodalcontentText').html(data.html)
+                        $('#reportmodalcontent').html('عملیات حذف بدون خطا انجام گردید .')
+                        $('#' + SeletedID).DataTable().ajax.reload();
+                    }
+                })
+            })
+        })
+    })
+
+    // Data Table جدول اصلی
+    var moneyFormatter = new Intl.NumberFormat();
+    var ModelName = document.getElementById('ModelName').value
+    var TableID = document.getElementById('idname').value
+    var URL = document.getElementById('URL').value
+    var URLDetail = document.getElementById('URLDetail').value
+    var RedirectURL = document.getElementById('RedirectURL').value
+
+    $('#SelectAll').click(function () {
+        var checkselected = document.getElementById('SelectAllInput')
+        if (checkselected.checked == true) {
+            table.rows().select();
+        } else {
+            table.rows().deselect();
+        }
+    })
+
+    $('#' + TableID).addClass('table table-striped table-bordered table-hover table-bg-light shadow')
+
+    var table = $('#' + TableID).DataTable({
+        lengthChange: true,
+        scrollY: 400,
+        scrollCollapse: true,
+        aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "همه"]],
+        ordering: true,
+        processing: true,
+        serverSide: true,
+        orderCellsTop: true,
+
+        ajax: {
+            url: '/' + URL + '/',
+            dataSrc: "data"
+        },
+        language: {
+            "sdecimal": ',',
+            "sthousands": '.',
+            "sEmptyTable": "خالی",
+            "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ردبف",
+            "sInfoEmpty": "نمایش 0 از 0 تا 0 ردیف",
+            "sInfoFiltered": "(انتخاب شده از _MAX_ ردیف)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "نمایش _MENU_ ردیف",
+            "sLoadingRecords": "درحال بارگزاری",
+            "sProcessing": "درحال پردازش",
+            "sSearch": "جستجو:",
+            "sZeroRecords": "هبچ چیز پیدا نشد",
+            "srow selected": "ردیف های انتخاب شده",
+            "oPaginate": {
+                "sFirst": "اولین صفحه",
+                "sLast": "آخرین صفحه",
+                "sNext": "بعد",
+                "sPrevious": "قبل"
+            },
+            "oAria": {
+                "sSortAscending": "سورت بزرگ به کوچک",
+                "sSortDescending": "سورت کوچک به بزرگ"
+            },
+
+        },
+
+        columnDefs: [
+            {
+                orderable: false,
+                className: 'select-checkbox',
+                targets: 0
+            },
+            {
+                targets: 1,
+                data: null,
+                defaultContent: '<a id="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a id="BtnParamCreate" data-toggle="tooltip" data-placement="right" title="ایجاد پارامتر ها"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;<a id="BtnDetailShow" data-toggle="tooltip" data-placement="right" title="نمایش جزپیات"><i class="fa fa-sitemap"></i></a>',
+            },
+        ],
+        select: {
+            style: 'multi',
+            selector: 'tr'
+        },
+        order: [[2, 'asc']],
+        dom: 'Blfrtip',
+        buttons: ['copy', 'excel', 'pdf', 'print'],
+        pagingType: 'full_numbers',
+    });
+
+
+    // نمایش اولین زیر گروه ها
+    $('#' + TableID + ' tbody').on('click', 'a#BtnDetailShow', function () {
+
+        $("#" + TableID + " .selected td:first-child").each(function () {
+            var row = $(this).closest("tr")[0];
+            if (row.cells[2].innerHTML) {
+                var rowid = + row.cells[2].innerHTML
+                var rowname = row.cells[3].innerHTML
+            }
+            document.getElementById('SubRowid').value = rowid
+            $('#SelectAllDetail').click(function () {
+                var checkselected = document.getElementById('SelectAllDetailInput')
+                if (checkselected.checked == true) {
+                    table.rows().select();
+                } else {
+                    table.rows().deselect();
+                }
+            })
+            $('#MasterTableDetail').addClass('table table-striped table-bordered table-hover table-bg-light text-center')
+            $('#CreateBreedCrumb').html('<button type="button" class="btn btn-info m-2 radius-10 p-2 h6 fw-bold text-dark shadow border" data-bs-dismiss="modal"><i class="fa fa-home"></i>' + rowname + '</button>')
+            var table = $('table#MasterTableDetail').DataTable({
+                ajax: {
+                    url: '/' + URLDetail + '/' + rowid,
+                },
+                aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "همه"]],
+                language: {
+                    "sdecimal": ',',
+                    "sthousands": '.',
+                    "sEmptyTable": "خالی",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ردبف",
+                    "sInfoEmpty": "نمایش 0 از 0 تا 0 ردیف",
+                    "sInfoFiltered": "(انتخاب شده از _MAX_ ردیف)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ ردیف",
+                    "sLoadingRecords": "درحال بارگزاری",
+                    "sProcessing": "درحال پردازش",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "هبچ چیز پیدا نشد",
+                    "srow selected": "ردیف های انتخاب شده",
+                    "oPaginate": {
+                        "sFirst": "اولین صفحه",
+                        "sLast": "آخرین صفحه",
+                        "sNext": "بعد",
+                        "sPrevious": "قبل"
+                    },
+                    "oAria": {
+                        "sSortAscending": "سورت بزرگ به کوچک",
+                        "sSortDescending": "سورت کوچک به بزرگ"
+                    },
+
+                },
+                columnDefs: [
+                    {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        targets: 1,
+                        data: null,
+                        defaultContent: '<a id="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a id="BtnParamCreate" data-toggle="tooltip" data-placement="right" title="ایجاد پارامتر ها"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;<a id="BtnDetailShow" data-toggle="tooltip" data-placement="right" title="نمایش جزپیات"><i class="fa fa-sitemap"></i></a>',
+                    },
+                ],
+                select: {
+                    style: 'multi',
+                    selector: 'tr'
+                },
+                order: [[2, 'asc']],
+                dom: 'Blfrtip',
+                buttons: ['copy', 'excel', 'pdf', 'print'],
+                pagingType: 'full_numbers',
+            })
+            $('#MasterTabbleShowDetail').modal('show')
+        })
+    })
+
+    $('#MasterTabbleShowDetail').on('hidden.bs.modal', function () {
+        $('#MasterTableDetail').dataTable().fnDestroy();
+        $('#CreateBreedCrumbPath').remove()
+    });
+
+    // نمایش زیرگروه های بیشتر
+    $('#MasterTabbleShowDetail tbody').on('click', 'a#BtnDetailShow', function () {
+
+        $("#MasterTabbleShowDetail .selected td:first-child").each(function () {
+            var row = $(this).closest("tr")[0];
+            if (row.cells[2].innerHTML) {
+                var rowid = + row.cells[2].innerHTML
+                var rowname = row.cells[3].innerHTML
+                var rowparent = row.cells[4].innerHTML
+            }
+
+            $('#SelectAllDetail').click(function () {
+                var checkselected = document.getElementById('SelectAllDetailInput')
+                if (checkselected.checked == true) {
+                    table.rows().select();
+                } else {
+                    table.rows().deselect();
+                }
+            })
+            $('#MasterTableDetail').addClass('table table-striped table-bordered table-hover table-bg-light text-center')
+            $('#MasterTableDetail').dataTable().fnDestroy();
+            $('#CreateBreedCrumb').append('<a id =' + rowparent + ' class=" btn radius-10 p-2 mt-2 h6 fw-bold text-dark shadow border">' + rowname + '</a>')
+            $('a.btn').click(function () {
+                var pathid = $(this).attr('id')
+                $('#MasterTableDetail').dataTable().fnDestroy();
+                var table = $('table#MasterTableDetail').DataTable({
+                    ajax: {
+                        url: '/' + URLDetail + '/' + pathid,
+                    },
+                    aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "همه"]],
+                    language: {
+                        "sdecimal": ',',
+                        "sthousands": '.',
+                        "sEmptyTable": "خالی",
+                        "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ردبف",
+                        "sInfoEmpty": "نمایش 0 از 0 تا 0 ردیف",
+                        "sInfoFiltered": "(انتخاب شده از _MAX_ ردیف)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ",",
+                        "sLengthMenu": "نمایش _MENU_ ردیف",
+                        "sLoadingRecords": "درحال بارگزاری",
+                        "sProcessing": "درحال پردازش",
+                        "sSearch": "جستجو:",
+                        "sZeroRecords": "هبچ چیز پیدا نشد",
+                        "srow selected": "ردیف های انتخاب شده",
+                        "oPaginate": {
+                            "sFirst": "اولین صفحه",
+                            "sLast": "آخرین صفحه",
+                            "sNext": "بعد",
+                            "sPrevious": "قبل"
+                        },
+                        "oAria": {
+                            "sSortAscending": "سورت بزرگ به کوچک",
+                            "sSortDescending": "سورت کوچک به بزرگ"
+                        },
+
+                    },
+                    columnDefs: [
+                        {
+                            orderable: false,
+                            className: 'select-checkbox',
+                            targets: 0
+                        },
+                        {
+                            targets: 1,
+                            data: null,
+                            defaultContent: '<a id="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a id="BtnParamCreate" data-toggle="tooltip" data-placement="right" title="ایجاد پارامتر ها"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;<a id="BtnDetailShow" data-toggle="tooltip" data-placement="right" title="نمایش جزپیات"><i class="fa fa-sitemap"></i></a>',
+                        },
+                    ],
+                    select: {
+                        style: 'multi',
+                        selector: 'tr'
+                    },
+                    order: [[2, 'asc']],
+                    dom: 'Blfrtip',
+                    buttons: ['copy', 'excel', 'pdf', 'print'],
+                    pagingType: 'full_numbers',
+                })
+            })
+            var table = $('table#MasterTableDetail').DataTable({
+                ajax: {
+                    url: '/' + URLDetail + '/' + rowid,
+                },
+                aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "همه"]],
+                language: {
+                    "sdecimal": ',',
+                    "sthousands": '.',
+                    "sEmptyTable": "خالی",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ردبف",
+                    "sInfoEmpty": "نمایش 0 از 0 تا 0 ردیف",
+                    "sInfoFiltered": "(انتخاب شده از _MAX_ ردیف)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ ردیف",
+                    "sLoadingRecords": "درحال بارگزاری",
+                    "sProcessing": "درحال پردازش",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "هبچ چیز پیدا نشد",
+                    "srow selected": "ردیف های انتخاب شده",
+                    "oPaginate": {
+                        "sFirst": "اولین صفحه",
+                        "sLast": "آخرین صفحه",
+                        "sNext": "بعد",
+                        "sPrevious": "قبل"
+                    },
+                    "oAria": {
+                        "sSortAscending": "سورت بزرگ به کوچک",
+                        "sSortDescending": "سورت کوچک به بزرگ"
+                    },
+
+                },
+                columnDefs: [
+                    {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        targets: 1,
+                        data: null,
+                        defaultContent: '<a id="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a id="BtnParamCreate" data-toggle="tooltip" data-placement="right" title="ایجاد پارامتر ها"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;<a id="BtnDetailShow" data-toggle="tooltip" data-placement="right" title="نمایش جزپیات"><i class="fa fa-sitemap"></i></a>',
+                    },
+                ],
+                select: {
+                    style: 'multi',
+                    selector: 'tr'
+                },
+                order: [[2, 'asc']],
+                dom: 'Blfrtip',
+                buttons: ['copy', 'excel', 'pdf', 'print'],
+                pagingType: 'full_numbers',
+            })
+        })
+    })
+    var SelectMasterTable = $('#MasterTable').DataTable();
+
+
+    // SelectBox
+    $('div.SelectBox').click(function () {
+        $(this, 'input.SelectBoxInput').attr('checked', true)
+    })
+    })
+</script>

@@ -1,0 +1,132 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش لیست کاربر ها|
+{% endblock %}
+
+
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:productsgroupsLV' id=0 %}">داشبورد ادمین</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active" aria-current="page">
+                            گزارش لیست کاربر ها</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div class=" border-right" style="display: inline-block;" aria-label="...">
+                        <a class="btn btn-success rounded shadow" href="{% url 'WebSite:create_user' %}">
+                            ایجاد</a>
+                    </div>
+                    
+                    <div class=" border-right" style="display: inline-block;" aria-label="...">
+                        {% include 'partials/reportmodal.html' %}
+                        <input id="modelname" type="hidden" value="User">
+                        <input id="idname" type="hidden" value="UsersTable">
+                        <a class="btn btn-danger rounded shadow" id="BtnGprDelete" href="#">حذف گروهی</a>
+                    </div>
+
+                    <div class=" border-right shadow" style="display: inline-block;" aria-label="...">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#exampleScrollableModal">ویرایش گروهی - گروه کاری</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleScrollableModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-body m-4">
+                                        <p>لطفا گروه مورد نظر را انتخاب نمائید :</p>
+
+                                        <select id="cgroupid" name="Customersglist" class=" single-select ">
+                                            <option value="">--------</option>
+                                            {% for c in usergroup %}
+                                            <option value="{{c.id}}">{{ c.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">بستن</button>
+
+                                        <button id="newgroupid" type="button" class="btn btn-success"
+                                            data-bs-dismiss="modal">ذخیره تغییرات</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                        <tr>
+                            <td class="container"
+                                style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
+                                گزارش لیست کاربر ها
+                            </td>
+                        </tr>
+                    </table>
+                    <script>
+                        var Window;
+
+                        function formdetailsOpen(a) {
+
+                            Window = window.open(
+                                "/dashboard/Admin/ChangePassword/" + a,
+                                "_blank", "width=700, height=400,position=relative; top=10%; left=-20%;");
+                        }
+                    </script>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="UsersTable" class="table table-striped table-bordered" style="width: 100%;">
+                                    <thead>
+                                        <tr class="font-weight-bold text-center">
+                                            <th style="text-align:center;"> <input type="checkbox" class="selectAll "
+                                                    name="selectAll" value="all">
+                                            </th>
+                                            <th>کد</th>
+                                            <th>کلید ها</th>
+                                            <th>تغییر کلمه عبور</th>
+                                            <th>گروه</th>
+                                            <th>نام کاربری</th>
+                                            <th>نام و نام خانوادگی کاربر</th>
+                                            <th>فعال بودن</th>
+                                            <th>جایگاه</th>
+                                            <th>ادمین بودن</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div><!-- End .col-lg-9 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </div><!-- End .main -->
+    </div><!-- End .page-wrapper -->
+</div>
+
+{% endif %}
+{% endif %}
+
+{% endblock %}

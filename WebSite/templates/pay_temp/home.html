@@ -1,0 +1,49 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+{% load my_templatetag %}
+
+{% block title %}
+{{ super }} سبد خرید|
+{% endblock %}
+
+{% block body %}
+{% include 'partials/header-h2.html' %}
+
+
+ 
+
+      <div class="container mt-2">
+            <div class="row">
+            <div class="col-3"></div>
+              <div class="col-6">
+
+                <form action="{% url 'WebSite:request' %}" method="POST">
+                    {% csrf_token %}
+
+                    <p class="form-control border border-dark text-center text-dark" >
+                      
+                    {% if amount %}{% for amount in amount %} {{ amount }} {% endfor %}{% else %}
+                    0{% endif %}</p>
+                
+                    <input class="form-control border border-dark" type="text" name="name" placeholder="نام و نام خانوادگی" required>
+                    <input class="form-control border border-dark" type="text" name="phone" placeholder="شماره تماس">
+                    <input class="form-control border border-dark" type="mail" name="mail" placeholder="ایمیل">
+                    <input class="form-control border border-dark" type="text" name="desc" placeholder="شرح">
+                    <button class="w-100 btn btn-success" type="submit" class="btn btn-primary">پرداخت نهایی</button>
+
+                </form>
+
+              </div>
+              <div class="col-3"></div>
+            </div>
+          </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    {% include 'partials/footer-small.html' %}
+    {% include 'partials/mobile-menu.html' %}
+    {% endblock %}

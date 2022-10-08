@@ -1,0 +1,359 @@
+{% load static %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="modal fade" id="CreateProducts" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                فرم ایجاد کالای جدید
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+
+                                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                                <tr>
+                                                    <td class="container fw-bold text-start h5 p-2">
+                                                        ایجاد کالا
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            {% csrf_token %}
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام کالا
+                                                    </td>
+                                                    <td>
+                                                        <input name="name" id="PName" type="text" class="form-control"
+                                                            required>
+                                                    </td>
+                                                    <td>
+                                                        سریال
+                                                    </td>
+                                                    <td>
+                                                        <input name="serial" id="PSerial" type="text"
+                                                            class="form-control">
+                                                    </td>
+                                                </tr>
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام گروه
+                                                    </td>
+                                                    <td>
+                                                        <select name="group" id="PGroup" class="single-select" required>
+                                                            <option value="0">---------</option>
+                                                            {% for a in groups %}
+                                                            {% if a.glevel == 3 or a.glevel == 2 or a.glevel == 1 %}
+                                                            <option value="{{ a.id }}">
+                                                                {{ a.Group_Name }}
+                                                                {% for gpn in group_parent_name %}
+                                                                {% if gpn.id != 0 and a.gparentid == gpn.id %}
+                                                                (گروه : {{ gpn.Group_Name }} )
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                                {% for gpn_l1 in group_parent_name_l1 %}
+                                                                {% if gpn_l1.id != 0 and a.gparentid == gpn_l1.id %}
+                                                                (گروه : {{ gpn_l1.Group_Name }} )
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        مبلغ
+                                                    </td>
+                                                    <td>
+                                                        <input name="priceorg" class="form-control" type="number"
+                                                            id="PPriceorg">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        توضیح
+                                                    </td>
+                                                    <td>
+                                                        <input name="desc" class="form-control" type="text" id="PDesc">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        لینک شبکه اجتماعی
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="input-group mb-3">
+                                                            <button class="btn btn-outline-secondary" type="button"
+                                                                id="button-addon1">ارتباط با لینک</button>
+                                                            <input id="PSociallink" name="sociallink" type="text"
+                                                                class="form-control" placeholder=""
+                                                                aria-describedby="button-addon1">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">بستن</button>
+                                                <input name="SerializersName" id="SerializersName" type="hidden"
+                                                    value="ProductsSerializers">
+
+                                                <button id="BtnSave" type="button" data-bs-dismiss="modal"
+                                                    class="btn btn-success">ذخیره
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="EditProducts" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                ویرایش کالا
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+
+                                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                                <tr>
+                                                    <td class="container fw-bold text-start h5 p-2">
+                                                        ویراش کالا
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <input id="ErrorResult" type="hidden"
+                                                value="{% if ErrorResult %}{% for h in ErrorResult %}{{ h }}{% endfor %}{% endif %}">
+                                            <input id="ErrorText" type="hidden"
+                                                value="{% if ErrorText %}{% for t in ErrorText %}{{ t }}{% endfor %}{% endif %}">
+
+                                            {% csrf_token %}
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام کالا
+                                                    </td>
+                                                    <td>
+                                                        <input name="name" id="UPName" type="text" class="form-control"
+                                                            value="" required>
+                                                    </td>
+                                                    <td>
+                                                        سریال
+                                                    </td>
+                                                    <td>
+                                                        <input name="serial" id="UPSerial" type="text" value=""
+                                                            class="form-control">
+                                                    </td>
+                                                </tr>
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        نام گروه
+                                                    </td>
+                                                    <td>
+                                                        <select name="group" id="UPGroup" class="single-select"
+                                                            required>
+                                                            <option value="0">---------</option>
+                                                            {% for a in groups %}
+                                                            {% if a.glevel == 3 or a.glevel == 2 or a.glevel == 1 %}
+                                                            <option value="{{ a.id }}">
+                                                                {{ a.Group_Name }}
+                                                                {% for gpn in group_parent_name %}
+                                                                {% if gpn.id != 0 and a.gparentid == gpn.id %}
+                                                                (گروه : {{ gpn.Group_Name }} )
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                                {% for gpn_l1 in group_parent_name_l1 %}
+                                                                {% if gpn_l1.id != 0 and a.gparentid == gpn_l1.id %}
+                                                                (گروه : {{ gpn_l1.Group_Name }} )
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        مبلغ
+                                                    </td>
+                                                    <td>
+                                                        <input name="priceorg" class="form-control" type="number"
+                                                            id="UPPriceorg">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        توضیح
+                                                    </td>
+                                                    <td>
+                                                        <input name="desc" class="form-control" type="text" id="UPDesc">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-sm table-hover p-4">
+                                                <tr class="fw-bold text-center">
+                                                    <td>
+                                                        لینک شبکه اجتماعی
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group mb-3">
+                                                            <button class="btn btn-outline-secondary" type="button"
+                                                                id="button-addon1">ارتباط با
+                                                                لینک</button>
+                                                            <input id="UPSociallink" name="sociallink" type="text"
+                                                                class="form-control" placeholder=""
+                                                                aria-describedby="button-addon1">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">بستن</button>
+                                                <input name="SerializersName" id="SerializersName" type="hidden"
+                                                    value="ProductsSerializers">
+                                                <input name="model" id="ModelName" type="hidden" value="Products">
+                                                <input name="rowid" id="rowid" type="hidden" value="">
+                                                <input name="RedirectURL" id="RedirectURL" type="hidden"
+                                                    value="ProductsList">
+
+                                                <button id="UpdateSaveKey" type="submit" class="btn btn-success">ذخیره
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="CreateProductsParametrs" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                ایجاد پارامتر های کالا
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+                                            <input id="ErrorResult" type="hidden"
+                                                value="{% if ErrorResult %}{% for h in ErrorResult %}{{ h }}{% endfor %}{% endif %}">
+                                            <input id="ErrorText" type="hidden"
+                                                value="{% if ErrorText %}{% for t in ErrorText %}{{ t }}{% endfor %}{% endif %}">
+                                            <div class="container mt-3 mb-4">
+                                                {% for cat in cat %}
+                                                <div class="d-inline border radius-10 p-2 m-2 shadow SelectBox">
+                                                    <input type="checkbox"
+                                                        class="form-check-input CategoryForSelect m-1 SelectBoxInput"
+                                                        value="{{ cat.id }}">
+                                                    <label class="fw-bold text-center m-1">{{ cat.cname }}</label>
+                                                </div>
+                                                {% endfor %}
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button id="DeletePorductsParam" type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-trash"></i> حذف کلیه پارامتر ها
+                                                </button>
+                                                <button id="CreatePorductsParam" type="submit" class="btn btn-success">
+                                                    <i class="fa fa-plus"></i> ایجاد ردیف های پارامتر ها
+                                                </button>
+                                            </div>
+                                            <div id="ParametrsThatCreated">
+
+                                            </div>
+                                            <div class="modal-footer">
+
+
+                                                <button disabled id="CreatePorductsParamFinalSave" type="submit"
+                                                    class="btn btn-success"><i class="fa fa-plus"></i> ایجاد کلیه
+                                                    پارامتر ها برای کالای انتخابی
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="ParamCreateError" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                ادمین گرامی :
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 p-1">
+                                        <div class="fw-bold text-dark">
+
+                                            <p  class="fw-bold text-start text-dark h6">
+                                                <i class='fas fa-exclamation-triangle' style='font-size:45px; color: yellow;'></i>
+
+                                                <span id="errortext">
+
+                                                </span>
+                                            </p>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i
+                                                    class="fa fa-window-close"></i> بستن</button>
+                                            <button id="CreatePorductsParamFinalSave" type="submit"
+                                                class="btn btn-success"><i class="fa fa-plus"></i> ایجاد سایر پارامتر ها
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

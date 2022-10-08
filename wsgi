@@ -1,0 +1,1 @@
+from WebSiteProject.wsgi import application

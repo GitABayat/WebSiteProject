@@ -1,0 +1,121 @@
+{% load static %}
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay "></div>
+
+<div class="mobile-menu-container mobile-menu-light text-dark fw-bold">
+    <div class="mobile-menu-wrapper">
+        <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+        <form method="get" action="{% url 'WebSite:search_box' %}" class="mobile-search">
+            <label for="mobile-search" class="sr-only">جستجو</label>
+            <input type="search" class="form-control" name="search" id="mobile-search"
+                placeholder="جستجو در ..." required>
+            <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+        </form>
+
+        <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab"
+                    role="tab" aria-controls="mobile-menu-tab" aria-selected="true">منو</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel"
+                aria-labelledby="mobile-menu-link">
+                <nav class="mobile-nav">
+                    <ul class="mobile-menu">
+                        <li class="active">
+                            <a href="{% url 'WebSite:login' %}">خانه</a>
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href="#" class="sf-with-ul">{% if request.user.username %}
+                                    درود
+                                    {{ request.user.first_name }}
+                                    {% endif %}</a>
+            
+                                <ul style="display: none;">
+                                    <li><a {% if user.is_superuser %} href="{% url 'WebSite:accountingreports' %}" {% else %}
+                                            href="{% url 'WebSite:dashboard'  %}" {% endif %}>پنل کاربری</a></li>
+                                    <li><a href="{% url 'WebSite:logout' %}">خروج</a></li>
+            
+                                </ul>
+                                {% else %}
+            
+                                <a href="{% url 'WebSite:loginusermobile' %}">ورود یا ثبت نام</a>
+            
+                                {% endif %}
+                            </li>
+                                {% for spg in spg %}
+                                {% if spg and spg.gparentid == 0 %}
+                                <li>
+                                <a class="sf-with-ul" href="">&nbsp;{{ spg.Group_Name }}&nbsp;&nbsp;&nbsp;</a>
+                                <ul style="display: none;">
+                                    {% for spgt in spgt %}
+                                    {% if spgt.gparentid == spg.id and spgt.glevel == 2 %}
+            
+                                    <li>
+                                        <a class="fw-bold text-dark"
+                                            href="{% url 'WebSite:advancedsearchProducts' spgt.id %}">{{ spgt.Group_Name }}
+                                        </a>
+                                        <!-- <ul style="display: none;">
+                                            {% for spgtr in spgtr %}
+                                            {% if spgt.id == spgtr.gparentid and spgtr.glevel == 3 %}
+                                            <li><a href="{% url 'WebSite:advancedsearchProducts' spgtr.id %}">{{ spgtr.Group_Name }}</a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% for spgtr2 in spgtr2 %}
+                                            {% if spgt.id == spgtr2.id %}
+                                            <li><a href="{% url 'WebSite:advancedsearchProducts' spgtr2.id %}">+موارد
+                                                    بیشتر . .</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </ul> -->
+                                    </li>
+            
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% endfor %}
+                        </li>
+                           
+                        <li>
+                            <a href="" class="sf-with-ul">درباره ما</a>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'WebSite:about' %}">درباره ما</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="" class="sf-with-ul ">تماس با ما</a>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'WebSite:contact' %}">تماس با ما</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="" class="sf-with-ul ">اخبار</a>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'WebSite:weblog' %}">وب لاگ</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        <div class="social-icons">
+            <!-- <a href="#" class="social-icon" target="_blank" title="فیسبوک"><i class="icon-facebook-f"></i></a>
+            <a href="#" class="social-icon" target="_blank" title="توییتر"><i class="icon-twitter"></i></a> -->
+            <a href="https://www.instagram.com/WebSiteProject_ir/" class="social-icon" target="_blank" title="اینستاگرام"><i class="icon-instagram"></i></a>
+            <a href="https://wa.me/qr/AX24KLKJFKAWP1" class="social-icon" target="_blank" title="واتس اپ"><i class="icon-whatsapp"></i></a>
+            <!-- <a href="#" class="social-icon" target="_blank" title="یوتیوب"><i class="icon-youtube"></i></a> -->
+        </div>
+    </div>
+</div>

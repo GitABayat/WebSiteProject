@@ -1,0 +1,53 @@
+<div class="col-lg-3 col-md-4 col-6">
+    <div class="border" style="border-radius: 10px;">
+        <figure class="product-media ">
+            
+            <a href="/category/productlist/showproduct/{id}/{pname}/">
+                <img style="max-height: 168px; border-radius: 10px; max-width: 100%;" 
+                src="/static/media/{img1}"
+                    alt="تصویر محصول" class="product-image">
+
+                <img style="max-height: 168px; border-radius: 10px; max-width: 100%;"
+                src="/static/media/{img2}" alt="تصویر محصول" class="product-image-hover">
+            </a>
+            {notexisthtml}
+
+            <div class="product-action-vertical">
+                <div onclick="addFavorite({id},'{name}','{img1}')" class="btn-product-icon btn-wishlist btn-expandable"
+                    style="cursor: pointer;">
+                    <span>افزودن به لیست علاقه مندی</span>
+                </div>
+            </div><!-- End .product-action -->
+            <div class="product-action action-icon-top">
+                <div onclick="addbascket({id},'{name}','{img1}')" style="cursor: pointer;"
+                    class="text-decoration-none btn-product btn-cart" title="افزودن به سبد خرید">
+                    <span>افزودن به سبد خرید</span>
+                </div>
+            </div><!-- End .product-action -->
+        </figure><!-- End .product-media -->
+
+        <div class="product-body"  style="border-radius: 10px;">
+            <div class="ratings-container">
+                <div class="ratings">
+                    <div class="ratings-val" style="width: {StarAvarage}%;">
+                    </div><!-- End .ratings-val -->
+                </div><!-- End .ratings -->
+                <span class="ratings-text">( 0 دیدگاه )</span>
+            </div><!-- End .rating-container -->
+            <!-- <div class="product-cat">
+                <a href="#">گروه محصول : {group}
+                </a>
+            </div> -->
+            <h3 class="product-title">
+                <a href="/category/productlist/showproduct/{id}/">نام کالا :{name}</a>
+            </h3>
+            <!-- <h3 class="product-title">
+                <a href="#">برند کالا :{brand}</a>
+            </h3> -->
+            <div class="product-price">
+                <span class="new-price">{priceoff}</span>
+                <span class="old-price">{priceorg}</span>
+            </div><!-- End .product-price -->[]
+        </div><!-- End .product-body -->
+    </div><!-- End .product -->
+</div>

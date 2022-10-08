@@ -1,0 +1,89 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش لیست کاربر های فعال|
+{% endblock %}
+
+
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="#">داشبورد ادمین</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active" aria-current="page">
+                            گزارش لیست کاربر های فعال</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+          
+                    <div class=" border-right" style="display: inline-block;" aria-label="...">
+                        <a class="btn btn-danger rounded shadow" id="userBtnDelete" href="#">غیر فعال کردن گروهی سشن کاربر ها</a>
+                    </div>
+
+                    <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                        <tr>
+                            <td class="container"
+                                style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
+                                گزارش لیست کارب های فعال
+                            </td>
+                        </tr>
+                    </table>
+                   
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="ActiveUsersTable" style="width: 100%;" class="fw-bold text-center text-dark">
+                                    <thead>
+                                        <tr>
+                                            <th>کد/غیرفعال کردن</th>
+                                            <th>نام و نام فامیلی</th>
+                                            <th>نام کاربری</th>
+                                            <th>تلفن</th>
+                                            <th>ایمیل</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for au in active_users %}
+                                        <tr>
+                                            <td onclick="closeactiveuser('{{ au.id }}')">
+                                                <input id="closeactiveuser" type="button" value="غیر فعال کردن" class="btn-sm btn-warning btn-block" >
+                                            </td>
+                                            <td>{{ au.first_name }}</td>
+                                            <td>{{ au.username }}</td>
+                                            <td>{{ au.cellphone }}</td>
+                                            <td>{{ au.email }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div><!-- End .col-lg-9 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </div><!-- End .main -->
+    </div><!-- End .page-wrapper -->
+</div>
+
+{% endif %}
+{% endif %}
+
+{% endblock %}

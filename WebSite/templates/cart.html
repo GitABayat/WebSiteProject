@@ -1,0 +1,547 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+{% load my_templatetag %}
+
+{% block title %}
+{{ super }} سبد خرید|
+{% endblock %}
+
+
+
+{% block body %}
+<div class="page-wrapper">
+    {% include 'partials/header-h2.html' %}
+    <main class="main mt-2">
+        {% include 'partials/reportmodal.html' %}
+        <div class="page-content ">
+            <div class="cart">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 ">    
+                            <div class=" summary summary-cart">
+                                <div class="p-2 "
+                                    style="border: 1px black; border-radius: 5px; background-color: white;">
+                                    <h3 class="summary-title"
+                                        style="color:black; font-weight: bold; font-size: medium; ">
+                                        نمونه خرید های قبلی شما</h3><!-- End .summary-title -->
+                                    <div class="shop col-lg-3 col-md-3 col-sm-6 col-xs-12 " style="border-radius: 10px;">
+                                        <div class="owl-carousel owl-simple " data-toggle="owl" data-owl-options='{
+                                            rtl:true,
+                                            loop:true,
+                                            margin:10,
+                                            nav:true,
+                                            
+                                            "responsive": {
+                                                "0": {
+                                                    "items":2
+                                                },
+                                                "420": {
+                                                    "items":3
+                                                },
+                                                "600": {
+                                                    "items":4
+                                                },
+                                                "900": {
+                                                    "items":5
+                                                },
+                                                "1024": {
+                                                    "items":4,
+                                                    "nav": true,
+                                                    "dots": false,
+                                                    "mouseDrag": true,
+                                                    "touchDrag": true,
+                                                    "stagePadding": true
+                                                    
+                                                }
+                                            }
+                                        }'>
+                                            {% if groupproducts %}
+                                            {% for pg in groupproducts %}
+                                            <div class="product product-7 text-center mt-2 border shadow-lg" style="border-radius: 10px;">
+                                                <div >
+                                                    <figure class="product-media ">
+                                                    {% for zero in check_zero_procuts_count %}
+                                                        {% if zero.id == pg.id and zero.productinventory_remain == 0 or pg.goods == 0 %}
+
+                                                        <p class="product-label label-sale shadow"
+                                                            style="border-radius: 5px;">ناموجود</p>
+
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                        {% for max_min_pg in max_min_price_info_groupproducts %}
+                                                        {% if max_min_pg.0 ==  pg.id and max_min_pg.3 != 0 %}
+                                                        <p class="product-label label-sale shadow" style="border-radius: 5px;">تخفیف</p>
+                                                        {% endif %}
+                                                        {% endfor %} 
+                                                        
+                                                        <!-- <span class="product-label label-new">جدید</span> -->
+                                                        <a
+                                                            href="{% url 'WebSite:showproduct' pg.id pg.name|urlreplace %}">
+                                                            <img src="{% static 'media/' %}{{ pg.img1 }}"
+                                                                style="max-height: 168px;" alt="" class="product-image">
+                                                        </a>
+
+
+                                                    {% comment %}
+                                                        <!-- <div class="product-action">
+                                                            <div onclick="addbascket('{{pg.id}}','{{ pg.name }}','{{pg.img1}}')"
+                                                                style="cursor: pointer;"
+                                                                class="text-decoration-none btn-product btn-cart"
+                                                                title="افزودن به سبد خرید">
+                                                                <span>افزودن به سبد
+                                                                    خرید</span>
+                                                            </div>
+                                                        </div> -->
+                                                    {% endcomment %}
+                                                    </figure><!-- End .product-media -->
+
+                                                    <div class="product-body">
+                                                        <div class="ratings-container">
+                                                            <div class="ratings">
+                                                                <div class="ratings-val" style="width: 20%;"></div>
+                                                                <!-- End .ratings-val -->
+                                                            </div><!-- End .ratings -->
+                                                            <span class="ratings-text">( {{CommentCount}} دیدگاه )</span>
+                                                        </div><!-- End .rating-container -->
+                                                        <div class="product-cat text-center">
+                                                            <a
+                                                                href="{% url 'WebSite:showproduct' pg.id 'pg.name'|urlreplace %}">{{ pg.name }}</a>
+                                                        </div><!-- End .product-cat -->
+                                                        <!-- <h3 class="product-title text-center"><a href="">{{ pg.group }}</a></h3> -->
+                                                        <!-- End .product-title -->
+                                                        <div class="product-price">
+                                                        {% for max_min_pg in max_min_price_info_groupproducts %}
+                                                        {% if max_min_pg.0 ==  pg.id %}
+                                                        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fw-bold text-center text-dark h6">از {{ max_min_pg.1|intdot  }} تا {{ max_min_pg.2|intdot  }} ریال</p>
+                                                        {% endif %}
+                                                        {% endfor %} 
+                                                        </div><!-- End .product-price -->
+
+                                                    </div><!-- End .product-body -->
+                                                </div><!-- End .product -->
+                                            </div>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div><!-- End .owl-carousel -->
+                                    </div><!-- End .container -->
+                                </div>
+                            </div>
+                            {% if max_price > 0 %}
+                            <div class=" summary summary-cart">
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="color: red; font-size: medium; font-weight: bold;">مشتری گرامی
+                                    : درصورتی که سقف خرید شما به مبلغ {{ max_price | intdot }} هزار ریال برسد , هزینه
+                                    ارسال خرید شما رایگان خواهد شد .</p>
+                            </div>
+                            {% endif %}
+                            <div class=" summary summary-cart col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-radius: 15px;">
+                                <div>
+                                    <span class="fw-bold text-danger h6 text-justify-center ">
+                                        مشتری گرامی : لطفا جهت مشاهده همه اطلاعات - فاکتور را به چپ یا راست حرکت دهید.
+                                    </span>
+                                </div>
+                                <div class="mt-2 mb-2 table-responsive" style="border-radius: 15px;" >
+                                    <h3 class="summary-title border-bottom p-3 float-right"
+                                        style="color:black; font-weight: bold; font-size: medium; ">
+                                        اطلاعات فاکتور شما</h3>
+
+                                    <table style="border-radius: 15px;" 
+                                    class="shadow p-4 table table-hover table-xs table-bordered thead-light table-striped text-center
+                                    col-12">
+                                        <thead style="background-color: #fa8072">
+                                            <tr>
+                                                
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    محصول</th>
+                                                <th class="text-center  "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    رنگ</th>
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    سایز</th>
+
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    قیمت واحد</th>
+
+                                                <th 
+                                                style="font-size: medium;  color: black; font-weight: bold; " class="text-center">
+                                                    تعداد</th>
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    تخفیف</th>
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    مجموع</th>
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    وضعیت
+                                                </th>
+                                                <th class="text-center "
+                                                    style="font-size: medium;  color: black; font-weight: bold;">
+                                                    ***
+                                                </th>
+                                            </tr>
+                                            <tr></tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for sell in SellBascket %}
+                                            <tr id="cartrow{{sb.pid_id}}">
+                                                    {% if sell.colorid_bycolor != 0 %}
+                                                        {% for pcs in products_c_s  %}
+                                                            {% if pcs.0 == sell.pid_id  and pcs.7 == sell.colorid_bycolor and pcs.8 == sell.sizeid_bycolor %}
+                                                                <td >
+                                                                    <h3 class="product-title text-center ">
+                                                                        <a style="font-weight: bold; font-size: medium;  color: black;"
+                                                                            href="{% url 'WebSite:showproduct' sell.pid_id '%'|urlreplace  %}">{{ pcs.3 }}</a>
+                                                                    </h3><!-- End .product-title -->
+                                                                </td>
+                                                                <td class="col-lg-1  text-center fw-bold">{{ pcs.1 }}</td>
+                                                                <td class="col-lg-1  text-center fw-bold">{{ pcs.2 }}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% for pcs in products_c_s  %}
+                                                            {% if pcs.0 == sell.pid_id  and pcs.7 == sell.colorid_bysize and pcs.8 == sell.sizeid_bysize %}
+                                                                <td >
+                                                                    <h3 class="product-title text-center ">
+                                                                        <a style="font-weight: bold; font-size: medium;  color: black;"
+                                                                            href="{% url 'WebSite:showproduct' sell.pid_id '%'|urlreplace  %}">{{ pcs.3 }}</a>
+                                                                    </h3><!-- End .product-title -->
+                                                                </td>
+                                                                <td class="col-lg-1  text-center fw-bold">{{ pcs.1 }}</td>
+                                                                <td class="col-lg-1  text-center fw-bold">{{ pcs.2 }}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                <td style="font-weight: bold; font-size: medium;  color: black;"
+                                                    class="text-center">
+                                                    <p style="text-align: center;  color: black; font-weight: bold; font-size: medium;">
+                                                        {{ sell.orginalprice|intdot }}</p>
+                                                </td>
+                                                <td class="quantity-col text-center">
+                                                    <div class="cart-product-quantity ">
+                                                        <input id="getproductid" type="hidden" value="{{ sell.pid_id }}">
+                                                        <div hidden>
+                                                            <select id="color_id">
+                                                                <option selected value="0">---------</option>
+                                                            </select>
+                                                            <select id="size_id">
+                                                                <option selected value="0">---------</option>
+                                                            </select>
+                                                            <select id="get_color_id">
+                                                                <option selected value="0">---------</option>
+                                                            </select>
+                                                            <select id="get_size_id">
+                                                                <option selected value="0">---------</option>
+                                                            </select>
+                                                            <input type="hidden" id="cartpage" value="1">
+                                                        </div>
+                                                        <input  type="number" id="qtyc{{sell.id}}"
+                                                            onchange="updatecount('{{sell.id}}','{{sell.pid_id}}')"
+                                                            class="pcount form-control fw-bold text-dark" value="{{ sell.pcount }}" min="1"
+                                                            step="1" data-decimals="0" required>
+                                                            </div><!-- End .cart-product-quantity -->
+                                                </td>
+                                                <td id="SumOff{{sell.id}}"
+                                                    style="font-weight: bold; font-size: medium;  color: black;"
+                                                    class=" text-center ">
+                                                   
+                                                    {% widthratio sell.pdiscount 1 sell.pcount %}
+                                                   
+                                                </td>
+                                                <td class=" text-center" 
+                                                id="carttotalcost{{sell.id}}" 
+                                                    style="color:black; font-weight: bold; font-size: medium; ">
+                                                    <span>
+                                                     
+                                                        {% widthratio sell.pprise 1 sell.pcount %}
+                                                      
+                                                    </span>
+                                                </td>
+                                               
+                                                {% for pcs in products_c_s  %}
+                                                {% if forloop.first %}
+                                                    {% if pcs.0 == sell.pid_id and pcs.6 == 0   %}
+                                                        <td class="text-center bg-warning " >
+                                                            <a href="#" class="text-dark fw-bold">ناموجود</a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td class="text-center bg-success " >
+                                                            <a href="#" class="text-light fw-bold">موجود</a>
+                                                        </td>
+                                                    {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <td class="remove-col text-center bgColor-danger shadow rounded btn-close btn-danger">
+                                                    <button class="btn-close btn-danger rounded "
+                                                        onclick="deleteBascket('{{sell.id}}')"><i style="color: white;"></i></button>
+                                                </td>
+                                                
+                                                
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3 col-md-12 col-sm-12 col-xs-12 summary summary-cart ">
+                      
+                            <div class="summary summary-cart shadow" style="border-radius: 10px;">
+                                <h3 class="summary-title" style="color:black; font-weight: bold; font-size: medium; ">
+                                    جمع سبد خرید</h3><!-- End .summary-title -->
+                                <table class="table table-summary">
+                                    <tbody>
+                                   
+                                        <tr class="summary-total">
+                                            <td style="color:green; font-weight: bold; font-size: medium; ">
+                                                جمع فاکتور :</td>
+                                            <td class="text-left sumBascketPriceoff" style="color:green; font-weight: bold; font-size: medium; ">
+                                                {{ totalsumsell | intdot }} ریال
+                                            </td>
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td style="color:green; font-weight: bold; font-size: medium; ">
+                                                هزینه ارسال :</td>
+                                            <td class="text-left sumersal" style="color:green; font-weight: bold; font-size: medium; ">
+                                                {{ ersalcost | intdot }} ریال
+                                            </td>
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td style="color:green; font-weight: bold; font-size: medium; ">
+                                                مالیات 9٪ :</td>
+                                            <td class="text-left vat" style="color:green; font-weight: bold; font-size: medium; ">
+                                                {{ int_pay_after_laastpay_vat | intdot }} ریال
+                                            </td>
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td style="color:green; font-weight: bold; font-size: medium; ">
+                                                مبلغ قابل پرداخت :</td>
+                                            <td class="text-left factorsum" style="color:green; font-weight: bold; font-size: medium; ">
+                                                {% if max_price_with_vat > 0 %}
+                                                {{ max_price_with_vat| intdot }} ریال
+                                                {% else %}
+                                                {{ max_price_with_vat_cost| intdot }} ریال
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+          
+                            </div>
+                            
+                            <div class="summary summary-cart shadow" style="border-radius: 10px;">
+                                <h3 class="summary-title" style="color:black; font-weight: bold; font-size: medium; ">
+                                    روش ارسال :</h3><!-- End .summary-title -->
+
+                                <select id="user_send_type" name="sendtype"
+                                    class="single-select form-control border "
+                                    style="border-radius: 5px; ">
+                                    <option value="">--------</option>
+                                    {% comment %}
+                                    <!-- <option value="0">تحویل حضوری</option>
+                                    <option value="1">ارسال با پیک</option> -->
+                                    {% endcomment %}
+                                    <option value="2" selected>ارسال با پست پیش تاز</option>
+                                   
+                                </select>
+                                <input type="hidden" 
+                                id="senddate" 
+                                class="form-control datepicker2 border"
+                                    style="border-radius: 5px; font-size: medium; font-weight: bold; text-align: center;"
+                                    value="1900-01-01" />
+                               {% comment %}
+                                <!-- <h3 class="summary-title" style="color:black; font-weight: bold; font-size: medium; ">
+                                    تاریخ ارسال :</h3>
+                                <input type="text" id="senddate" class="form-control datepicker2 border"
+                                    style="border-radius: 5px; font-size: medium; font-weight: bold; text-align: center;" /> -->
+                                {% endcomment %}
+                                <hr />
+                                
+                                <button id="userssedtype" type="button" 
+                                class="btn btn-success mt-3 shadow col-lg-12 col-md-12 col-sm-12 col-xs-12 fw-bold"
+                                    data-bs-dismiss="modal" style="border-radius: 5px;">
+                                    تایید
+                                </button>
+                                <hr />
+                                <h3 class="summary-title" style="color:black; font-weight: bold; font-size: medium; ">
+                                    روش پرداخت :</h3><!-- End .summary-title -->
+<!-- 
+                                <select onchange="user_pay_type()" id="paytype"
+                                    class="single-select mt-2 form-control border "
+                                    style="border-radius: 5px; ">
+                                    <option value="1" selected>پرداخت آنلاین</option>
+                                    <option value="2">کارت به کارت</option>
+                                </select> -->
+                                <div onclick="user_pay_type()" >
+                                    <div class="form-check d-block col-12 mt-2">
+                                        <input class="form-check-input" value="" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                        <label class="form-check-label fw-bold text-center text-dark" for="flexRadioDefault1">
+                                            پرداخت آنلاین
+                                        </label>
+                                    </div>
+                                    <div class="form-check d-block col-12 mt-3">
+                                        <input class="form-check-input"  value="" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                                        <label class="form-check-label fw-bold text-center text-dark" for="flexRadioDefault2">
+                                            کارت به کارت
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr />
+                                <h3 class="summary-title" style="color:black; font-weight: bold; font-size: medium; ">
+                                     درگاه پرداخت پرداخت نهایی</h3><!-- End .summary-title -->
+
+                                <div class="accordion-summary" id="accordion-payment">
+                                    <div  id="pay_type_key">
+
+                                    <a 
+                                        {% for pcs in products_c_s %}
+                                            {% if pcs.6 != 0  %}
+                                                href="{% url 'WebSite:request' %}" 
+                                                type="button"
+                                                class="btn btn-success mt-3 shadow col-lg-12 col-md-12 col-sm-12 col-xs-12 fw-bold"
+                                                style="border-radius: 5px;"
+                                                label="پرداخت نهایی"
+                                            {% else %}
+                                                href="#"
+                                                type="button"
+                                                class="btn btn-warning mt-3 shadow col-lg-12 col-md-12 col-sm-12 col-xs-12 fw-bold"
+                                                style="border-radius: 5px;"
+                                                
+                                                label="برخی از کالا ها ناموجود می باشند"
+                                            {% endif %}
+                                        {% endfor %}>پرداخت نهایی</a>
+                                        <br/>
+                                        <p class="text-dark fw-bold col-12 mt-2">مشتری گرامی :</p>
+                                        <p class="text-dark fw-bold text-center col-12">انواع وضعیت کلید : <abbr class="text-danger fw-bold" title="درصورتی که کلید پرداخت نهایی زرد رنگ باشد - به این معناست که برخی از کالا ها نا موجود بوده و لازم است لیست خرید حذف شوند">پرداخت نهایی</abbr></p>
+                            
+                            </div><!-- End .summary -->
+                            </div>
+                            </div>
+                            <div class="summary summary-cart shadow " style="border-radius: 10px;">
+                                {% if user_info %}
+                                {% for ui in user_info %}
+                                <div class="float-right">
+                                    <div  style="border-radius: 10px;">
+    
+                                        <h3 class="summary-title"
+                                            style="color:black; font-weight: bold; font-size: medium; ">
+                                            اطلاعات شما</h3><!-- End .summary-title -->
+                                        <table class="mt-2">
+                                            <thead>
+                                                <tr>
+                                                    <td class="float-right border-bottom"
+                                                        style="color:black; font-weight: bold; font-size: medium; ">
+                                                        تلفن :</td>
+                                                    </tr>
+                                                 
+                                                    
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-right p-3" style="color:black;  font-size: medium; ">
+                                                        {% if ui.cellphone %}
+                                                        {{ ui.cellphone }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table><!-- End .table table-summary -->
+
+
+                                        <table class="mt-2 ">
+                                            <thead>
+                                                <tr >
+                                                    <td class="border-bottom "
+                                                        style="color:black; font-weight: bold; font-size: medium; ">
+                                                        آدرس :</td>
+                                                </tr><!-- End .summary-total -->
+                                                    
+                                            </thead>
+                                            <tbody class="col-12 container">
+                                               
+                                                <tr>
+                                                    <td class="text-right p-2"
+                                                        style="justify-self: auto; color:black;  font-size: medium; ">
+                                                        {% if ui.last_name %}
+                                                        {{ ui.last_name }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr><!-- End .summary-total -->
+                                            </tbody>
+                                        </table><!-- End .table table-summary -->
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 float-right">
+                                    
+                                        
+                                        <a onclick="userinfochangeOpen()" 
+                                        class="btn btn-success mt-3 shadow col-lg-12 col-md-12 col-sm-12 col-xs-12 fw-bold"
+                                            style="border-radius: 5px;"
+                                            id="tab-orders-link" data-toggle="tab" href="#" role="tab"
+                                            aria-controls="tab-orders" aria-selected="false">
+                                            <span class="btn-text">تغییر آدرس</span>
+                                            <span class="btn-hover-text">تغییر اطلاعات حساب کاربری</span>
+    
+                                            <script>
+                                                var Window;
+                                                function userinfochangeOpen() {
+    
+                                                    Window = window.open(
+                                                        "{% url 'WebSite:userchangeinfo' %}",
+                                                        "_blank", "width=1200, height=900,position=relative; top=10%; left=-20%;");
+                                                }
+                                            </script>
+                                        </a>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade bd-example-modal-lg" id="carttocart" aria-hidden="true" >
+                                <div class="modal-dialog modal-dialog-centered modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-body m-4">
+                                            <div class="row">
+                                                <div >
+                                                    <p class="text-dark fw-bold h6 p-3">ورود اطلاعات کارت به کارت</p>
+                                                    <hr class="shadow border-dark" />
+                                                    <div class="mt-2">
+                                                        <lable class="text-dark fw-bold">4 رقم سمت راست کارت :</lable>
+                                                        <input required placeholder="4 رقم سمت راست کارت خود را در این فیلد وارد نمایید" id="carttocart_cardno" class="form-control col-2" type="text" />
+
+                                                        <lable class="text-dark fw-bold">کد رهگیری پرداخت :</lable>
+                                                        <input required placeholder="کدی که پس از انجام عملیاتی بانکی توسط خودپرداز و یا گوشی به شما داده می شود" id="carttocart_trackingcode" class="form-control col-2" type="text" />
+
+                                                        <lable class="text-dark fw-bold">مبلغ پرداخت شده :</lable>
+                                                        <input required placeholder="مبلغ پرداخت شده" id="carttocart_price"  class="form-control col-2" type="text" />
+                                                    </div>
+                                                    <hr />
+                                                </div>
+                            
+                                                <div class="modal-footer">
+                                                    <button id="paytype_carttocart" style="border-radius: 5px;" 
+                                                    type="button" class="btn btn-success sha"
+                                                    data-dismiss="modal">ثبت سفارش</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .cart -->
+        </div><!-- End .page-content -->
+
+
+    </main><!-- End .main -->
+
+    {% include 'partials/footer-small.html' %}
+    {% include 'partials/mobile-menu.html' %}
+    {% endblock %}

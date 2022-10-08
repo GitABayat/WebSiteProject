@@ -1,0 +1,106 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+
+        <div class="container mt-5">
+
+            <div class="row">
+                <div class="col-12 ">
+                    <form action="." method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div style="margin-top: 1%;"
+                                class="mb-1 col-12 text-center">
+                                {% if success %}
+                                {% for report in success %}
+                                <p class="font-wait-bold  border border-success rounded text-success shadow"
+                                    style="padding: 1%; margin-right: 1%;">
+                                    {{ report }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+
+
+                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                <tr>
+                                    <td class="container"
+                                        style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
+                                        ویرایش اطلاعات کاربری
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <table class="text-center fw-bold text-dark col-12 border-bottom" style="margin-bottom: 10px;">
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        نام و نام خانوادگی
+                                    </td>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        ایمیل
+                                    </td>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        نام کاربری
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        {{ userinfo.first_name }}
+                                    </td>
+                                    <td >
+                                        {{ userinfo.email }}
+                                    </td>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        
+                                        <input class="form-control" 
+                                        type="text" 
+                                        value="{% for uname in user_name %}{{ uname }}{% endfor %}" disabled>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        ویرایش شماره تماس
+                                    </td>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        ویرایش عکس
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        {{ userinfo.cellphone }}
+                                    </td>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        {{ userinfo.avatar }}
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        آدرس
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold text-dark mt-2">
+                                        {{ userinfo.last_name }}
+                                    </td>
+                                </tr>
+                            </table>
+                            <input value="ذخیره تغییرات" type="submit"
+                                class=" shadow btn btn-success rounded col-lg-4 col-md-4 col-sm-12 col-12 fw-bold clearfix float-end mt-2"
+                                >
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+{% else %}
+{% include '404.html' %}
+{% endif %}
+{% endblock %}

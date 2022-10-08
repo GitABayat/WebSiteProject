@@ -1,0 +1,668 @@
+{% extends 'share/mainpage_for_other_pages.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش پارامتر ها|
+{% endblock %}
+
+
+
+{% block body %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+
+<div class="wrapper">
+    <div class="page-wrapper">
+        {% include 'partials/dashboard_header.html' %}
+        <div class="page-content">
+            {% include 'partials/reportmodal.html' %}
+            <nav aria-label="breadcrumb " class="breadcrumb-nav mb-3">
+                <div class="container-fluid ">
+                    <ol class="breadcrumb">
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a
+                                href="{% url 'WebSite:login' %}">خانه</a></li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item"><a href="#">داشبورد</a>
+                        </li>
+                        <li style="color: black; font-weight: bold;" class="breadcrumb-item active" aria-current="page">
+                            گزارش پارامتر ها</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="row row-cols-1 row-cols-lg-4">
+                {% include 'partials/side_menu_dashboard.html' %}
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    
+                    <div class=" border-right" style="display: inline-block;" aria-label="...">
+                        {% include 'partials/reportmodal.html' %}
+                        <input id="modelname" type="hidden" value="productsparamerts">
+                        <input id="idname" type="hidden" value="parametrlist">
+                        <a class="btn btn-danger rounded shadow" id="BtnGprDelete" href="#">حذف گروهی</a>
+                    </div>
+
+                    <div class=" border-right" style="display: inline-block;" aria-label="...">
+                        <a class="btn btn-success rounded shadow" data-bs-toggle="modal"
+                        data-bs-target="#exampleScrollableModal" >ایجاد</a>
+                    </div>
+                    
+                    <div class="border-right" style="display: inline-block;" aria-label="...">
+                        <a class="btn btn-warning rounded shadow" data-bs-toggle="modal" data-bs-target="#tools">
+                            <i class="bx bx-sitemap"></i>
+                            ابزار ها</a>
+                    </div>
+                    <div class="modal fade" id="tools" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        
+                                        ابزار ها
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body m-4">
+                                    <div class="row">
+                                        <div class="container">
+                    
+                                            <!-- Button trigger modal -->
+                                            <div class="col-12 m-2">
+                                                <div class="border-right" style="display: inline-block;" aria-label="...">
+                                                    <a class="btn btn-warning rounded shadow" onclick="chargeinvOpen(); function chargeinvOpen() {
+                                                                            var Window;
+                                                                            Window = window.open(
+                                                                                '/dashboard/productsparaminv/',
+                                                                                '_blank', 'width=1400, height=700,posision=relative; top=100px; left=100px;');
+                                                
+                                                                        }" class="text-decoration-none text-success" href="#">
+                                                        شارژ موجودی و کاردکس
+                    
+                                                    </a>
+                                                </div>
+                                                <div class="border-right" style="display: inline-block;" aria-label="...">
+                                                    <a class="btn btn-warning rounded shadow" data-bs-toggle="modal"
+                                                        data-bs-target="#takhfif">ایجاد تخفیف</a>
+                                                </div>
+                                                <div class="border-right" style="display: inline-block;" aria-label="...">
+                                                    <a class="btn btn-warning rounded shadow" data-bs-toggle="modal"
+                                                        data-bs-target="#showtakhfif">گزارش تخفیف ها</a>
+                                                </div>
+                                                <div class="border-right" style="display: inline-block;" aria-label="...">
+                                                    <a class="btn btn-warning rounded shadow" data-bs-toggle="modal"
+                                                        data-bs-target="#tadidshowmodal">تعدیل های گروهی کالا ها</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 m-2">
+                                                <div class="border-right" style="display: inline-block;" aria-label="...">
+                                                    <a class="btn btn-warning rounded shadow" data-bs-toggle="modal"
+                                                        data-bs-target="#ersalshowmodal">کنترل هزینه ارسال</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal fade" id="tadidshowmodal"  aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        تعدیل های گروهی کالا ها
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body m-4">
+                                    <div class="row">
+                                        <div class="container">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start p-1">
+                                                <p>نوع تعدیل:</p>
+                                                <select id="tadiltype" class="single-select form-control">
+                                                    <option value="0">--------</option>
+                                                    <option value="1">افزایش مبلغ(بر اساس مبلغ)</option>
+                                                    <option value="2">کاهش مبلغ(بر اساس مبلغ)</option>
+                                                    <option value="3">افزایش مبلغ(بر اساس درصد)</option>
+                                                    <option value="4">کاهش مبلغ(بر اساس درصد)</option>
+                                                    <option value="5">افزایش مقدار کالا</option>
+                                                    <option value="6">کاهش مقدار کالا</option>
+                                                    <option value="7">صفر کردن مقدار همه کالاها</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start p-1">
+                                                <p>نوع کالا یا گروه کالا:</p>
+                                                <select disabled id="tadilporgselcet" class="single-select form-control">
+                                                    <option value="0">--------</option>
+                                                    <option value="1">تعدیل (بر اساس کالا با رنگ و سایز مشخص )</option>
+                                                    <option value="2">تعدیل (برای همه رنگ و سایز های یک کالا)</option>
+                                                    <option value="3">تعدیل (بر اساس گروه کالا)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                    
+                                    <div class="row">
+                    
+                                        <div id="tadilProductSelect"
+                                            class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start">
+                    
+                                            <p>کالا:</p>
+                                            <select disabled id="tadilproduct" class="form-control single-select ">
+                                                <option value="0">--------</option>
+                                                {% for param in lastpinfo %}
+                                                <option value="{{ param.0 }}">{{ param.1 }}</option>
+                                                {% endfor %}
+                    
+                                            </select>
+                    
+                                            <p>سایز:</p>
+                                            <select disabled id="tadilsize" class=" form-control">
+                                                <option value="0">--------</option>
+                    
+                                            </select>
+                                            <p>رنگ:</p>
+                                            <select disabled id="tadilcolor" class=" form-control single-select ">
+                                                <option value="0">--------</option>
+                    
+                                            </select>
+                    
+                    
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 border-right float-end">
+                                            <p>کالا:</p>
+                                            <select disabled id="tadilforoneid" class="form-control single-select ">
+                                                <option value="0">--------</option>
+                                                {% for param in lastpinfo %}
+                                                <option value="{{ param.0 }}">{{ param.1 }}</option>
+                                                {% endfor %}
+                    
+                                            </select>
+                                            <hr/>
+                                            <p>انتخاب سطح گروه :</p>
+                                            <select disabled class="single-select form-control" id="tadil_group_level">
+                                                <option value="0">---------</option>
+                                                <option value="1">سطح یک</option>
+                                                <option value="2">سطح دو</option>
+                                                <option value="3">سطح سه</option>
+                                            </select>
+                                            <p>گروه</p>
+                                            <select disabled class="single-select form-control" id="select_tadil_group">
+                                                <option value="0">---------</option>
+                                            </select>
+                                        </div>
+
+                                        
+
+                                    </div>
+                                    <hr/>
+                                    <p>درصد یا مقدار و یا مبلغ مورد نظر</p>
+                                    <input required="true" id="tadil_value" class="form-control Required mb-2"
+                                        type="text" />
+                                   
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                    
+                                        <button disabled id="tadilkey" type="button" class="btn btn-success" data-bs-dismiss="modal">ذخیره
+                                            تغییرات</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div  class="p-2 border-right text-center" style="display: inline-block;" aria-label="...">
+                        <p id="param_takhfif_error" 
+                        class="fw-bold text-right text-danger h6 m-3 "
+                        style="border-radius: 5px;">
+
+                            </p>
+                    </div>
+                    
+                    
+                    <div class="modal fade" id="showtakhfif"  aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        گزارش تخفیف ها
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body table-responsive">
+                                    <div class="row p-5">
+                                        <div id="BtnGprDelete" class=" border-right" style="display: inline-block;" aria-label="...">
+                                            <input id="modelname" type="hidden" value="mastertakhfif">
+                                            <input id="idname" type="hidden" value="mastertakhfiftable">
+                                            <a class="btn btn-danger rounded shadow"  href="#"> حذف گروهی</a>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div >
+                                                        
+                                                        <table id="mastertakhfiftable"  style="width: 100%;">
+                                                            <thead>
+                                                                <tr class="font-weight-bold text-center">
+                                                                    <th style="text-align:center;"> 
+                                                                    <input id="checkAllForm" type="checkbox" class="selectAll" name="selectAll" value="all">
+                                                                    </th>
+                                                                    <th class="text-center">شماره</th>
+                                                                    <th class="text-center">کلید ها</th>
+                                                                    <th class="text-center">روش تخفیف</th>
+                                                                    <th class="text-center">نوع تخفیف</th>
+                                                                    <th class="text-center">کالا</th>
+                                                                    <th class="text-center">گروه کالا</th>
+                                                                    <th class="text-center">مبلغ تخفیف</th>
+                                                                    <th class="text-center">درصد تخفیف</th>
+                                                                    <th class="text-center">رنگ کالا</th>
+                                                                    <th class="text-center">سایز کالا</th>
+                                                                    <th class="text-center">توضیح</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                               
+                                                            </tbody>
+                                                        </table>
+                                                    </div><!-- End .col-lg-9 -->
+                                                </div><!-- End .row -->
+                                            </div><!-- End .container -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">بستن</button>
+                                            </div>
+                                        </div><!-- End .col-lg-9 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                    <div class="modal fade" id="confirmselect"  aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        ادمین گرامی :
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body table-responsive">
+                    
+                                    <div class="row p-5">
+                    
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                                <p 
+                                                class="text-start text-dark fw-bold h5" >
+                                                    لطفا یکی از شرایط زیر را انتخاب نمایید :
+                                                </p>
+                                                <div class="modal-body">
+                                                    <div class="col-12 m-3 p-3">
+                                                        <lable class="col-8 float-start fw-bold text-start text-dark" for="#takhfiftoall">حذف تخفیف های قبلی تعریف شده و ایجاد تخفیف جدید</lable>
+                                                        <button id="takhfiftoall" type="button" class="btn btn-danger col-4 float-end"
+                                                        data-bs-dismiss="modal">ایجاد تخفیف</button>
+                                                    </div>
+                                                    <div class="col-12 m-3 p-3">
+                                                        <lable class="col-8 float-start fw-bold text-start text-dark" for="#takhfifnormal">ایجاد تخفیف بدون تکراری ها</lable>
+                                                        <button id="takhfifnormal" type="button" class="btn btn-success col-4 float-end"
+                                                        data-bs-dismiss="modal">ایجاد تخفیف</button>
+                                                    </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">بستن</button>
+                                                </div>
+                                        </div><!-- End .col-lg-9 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                    <div class="modal fade" id="existingproducts"  aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        ادمین گرامی :
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body table-responsive">
+                    
+                                    <div class="row p-5">
+                    
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    
+                                            
+                                                <p id="existresult" 
+                                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 text-start text-dark fw-bold" >
+
+                                                </p>
+                    
+                    
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">بستن</button>
+                                                   
+                                                </div>
+                                        </div><!-- End .col-lg-9 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                    <div id="create_error_final" class="p-2 border-right text-center" style="display: inline-block;" aria-label="...">
+
+                    </div>
+                    <div class="modal fade bd-example-modal-lg" id="takhfif" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body m-4">
+                                    <div class="row">
+                                        <div class="container">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start p-1">
+                                                <p>نوع تخفیف:</p>
+                                                <select id="takhfifpricetype" name="takhfifpricetype" class=" single-select ">
+                                                    <option value="0">--------</option>
+                                                    <option value="1">تخفیف (بر اساس مبلغ)</option>
+                                                    <option value="2">تخفیف (بر اساس درصد)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start p-1">
+                                                <p>نوع کالا یا گروه کالا:</p>
+                                                <select disabled id="takhfifproducttype" name="takhfifproducttype" class="single-select">
+                                                    <option value="0">--------</option>
+                                                    <option value="1">تخفیف (بر اساس کالا)</option>
+                                                    <option value="2">تخفیف (بر اساس گروه کالا)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                            
+                                    <div class="row">
+                                        
+                                        <div aria-disabled="true" id="ProductSelect" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 float-start">
+                                          
+                                                <p>کالا:</p>
+                                                <select disabled id="takhfifproduct" name="takhfifproduct" class="form-control single-select ">
+                                                    <option value="0">--------</option>
+                                                    {% for param in lastpinfo %}
+                                                        <option value="{{ param.0 }}">{{ param.1 }}</option>
+                                                    {% endfor %}
+                                                    
+                                                </select>
+                                          
+                                               
+                                            
+                                                <p>سایز:</p>
+                                                <select disabled id="takhfifsize" name="takhfifsize" class=" form-control">
+                                                    <option value="">همه</option>
+                                              
+                                                </select>
+                                                <p>رنگ:</p>
+                                                <select disabled id="takhfifcolor" name="takhfifcolor" class=" form-control single-select ">
+                                                    <option value="0">همه</option>
+                                                  
+                                                </select>
+                                            
+                                           
+                                        </div>
+                                        <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 border-right float-end">
+
+                                                <p>انتخاب سطح گروه :</p>
+                                                <select disabled  class="single-select form-control" id="select_group_level">
+                                                    <option value="0">---------</option>
+                                                    <option value="1">سطح یک</option>
+                                                    <option value="2">سطح دو</option>
+                                                    <option value="3">سطح سه</option>
+                                                </select>
+                                                <p>گروه</p>
+                                                <select disabled class="single-select form-control" id="select_for_group">
+                                                    <option value="0">---------</option>
+                                                </select>
+                                        
+           
+                                        </div>
+                                    </div>
+                           
+                                    <hr/>
+                                    <p>درصد و یا مبلغ مورد نظر</p>
+                                        <input required="true" id="takhfif_update_value" name="takhfif_update_value" class="form-control Required" type="text"/>
+                                    <hr/>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <label  class="form-check-label" for="makediscountzerooffdisabled">
+                                        فعال سازی کلید صفر کردن تخفیف
+                                      </label>
+                                    <input value="0" type="checkbox" class="form-check-input" id="makediscountzerooffdisabled">
+                                    <button disabled id="makediscountzero" type="button" class="btn btn-danger"
+                                        data-bs-dismiss="modal">صفر کردن تخفیف</button>
+
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">بستن</button>
+    
+                                    <button id="send_info_products_takhfif" type="button" class="btn btn-success"
+                                        data-bs-dismiss="modal">ذخیره تغییرات</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="ersalshowmodal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        کنترل هزینه ارسال
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body m-4">
+                                    <div class="row">
+                                        <div class="container">
+                                            <div class="col-12 p-1">
+                                                <div class="fw-bold text-dark">
+                                                    <p class="mb-2"> نوع عملیات:</p>
+                                                    <select class="form-control" id="DMaxType">
+                                                        <option value="0">---------</option>
+                                                        <option value="1">براساس مبلغ</option>
+                                                        <option value="2">براساس مقدار</option>
+                                                        <option value="3">براساس مبلغ و مقدار</option>
+                                                    </select>
+                                                    <hr />
+                                                    <p>براساس مبلغ :</p>
+                                                    <div class="d-block col-12 mt-3">
+                                                        <input disabled id="cost_ersal_maxprice" class="form-control mb-2" type="text"
+                                                            placeholder="سقف مبلغ جهت برداشته شدن هزینه ارسال" />
+                                                    </div>
+                                                    <hr />
+                                                    <p>براساس مقدار :</p>
+                                                    <div class="d-block col-12 mt-3">
+                                                        <input disabled id="cost_ersal_maxcount" class="form-control mb-2" type="text"
+                                                            placeholder="سقف تعداد جهت برداشته شدن هزینه ارسال" />
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col-12 d-block">
+                                                        <p>مبلغ هزینه ارسال :</p>
+                                                        <input id="cost_ersal_price" class="form-control mb-2" type="text"
+                                                            placeholder="مبلغ هزینه ارسال را به ریال وارد نمایید" />
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                                                    <button disabled id="ersalcostkey" type="button" class="btn btn-success" data-bs-dismiss="modal">ذخیره
+                                                        تغییرات</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- Modal -->
+                    <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
+                        <tr>
+                            <td class="container"
+                                style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
+                                گزارش پارامتر محصول ها
+                            </td>
+                        </tr>
+                        
+                    </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <div >
+                                <table id="parametrlist">
+                                    <thead>
+                                        <tr class="font-weight-bold text-center">
+                                            <th style="text-align:center;"> <input id="checkAllForm" type="checkbox"
+                                                    class="selectAll " name="selectAll" value="all"></th>
+                                            <th class="text-center">کد</th>
+                                            <th class="text-center">کلید ها</th>
+                                            <th class="text-center">سریال</th>
+                                            <th class="text-center">کالا</th>
+                                            <th class="text-center">رنگ</th>
+                                            <th class="text-center">سایز</th>
+                                            <th class="text-center">تعداد اولیه</th>
+                                            <th class="text-center">تعداد شارژ شده</th>
+                                            <th class="text-center">تعداد فروش رفته</th>
+                                            <th class="text-center">تعداد مانده</th>
+                                            <th class="text-center">مبلغ</th>
+                                            <th class="text-center">مبلغ تخفیف</th>
+                                            <th class="text-center">مبلغ پس از تخفیف</th>
+                                            <th class="text-center">توضیح</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div><!-- End .col-lg-9 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                    
+                    <div class="modal fade" id="exampleScrollableModal"  aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        ایجاد پارامتر ها
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body table-responsive">
+                    
+                                    <div class="row p-5">
+                    
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    
+                                            <form method="GET" role="form" enctype="multipart/form-data" autocomplete="off">
+                                                {% csrf_token %}
+                                                <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 table table-striped table-hover table-bordered table-sm display w-100" >
+                                                    
+                                                    <tr>
+                                                        <td  class="font-weight-bold text-center">
+                                                            کالا
+                                                        </td>
+                                                        <td>
+                                                            <select id="pid" class="single-select" name="pid">
+                                                                <option value="0">---------</option>
+                                                                {% for p in products %}
+                                                                <option value="{{ p.id }}">{{ p.name }}</option>
+                                                                {% endfor %}
+                                                                
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr></tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold text-center">
+                                                            توضیح
+                                                        </td>
+                                                        <td>
+                                                        <input id="pdesc" type="text" name="pdesc" class="form-control">
+                                                        </td>
+                                                       
+                                                    </tr>
+                                                    
+                                                    
+                                                </table>
+                                                <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 table table-striped table-hover table-bordered table-sm display w-100" >
+                                                    <tr>
+                                                        
+                                                        <td  class="font-weight-bold text-center">
+                                                            رنگ
+                                                        </td>
+                                                        <td>
+                                                            <select id="cid"  class="single-select" name="cid">
+                                                                <option value="0">---------</option>
+                                                                {% for c in color %}
+                                                                <option value="{{ c.id }}">{{ c.color }}</option>
+                                                                {% endfor %}
+                                                                
+                                                            </select>
+                                                        </td>
+                                                        <td  class="font-weight-bold text-center">
+                                                            سایز
+                                                        </td>
+                                                        <td>
+                                                            <select id="sid"  class="single-select" name="sid">
+                                                                <option value="0">---------</option>
+                                                                {% for s in size %}
+                                                                <option value="{{ s.id }}">{{ s.size }}</option>
+                                                                {% endfor %}
+                                                                
+                                                            </select>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                               <tr></tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold text-center">
+                                                            تعداد
+                                                        </td>
+                                                        <td>
+                                                        <input id="inventory" type="number" name="productinventory" class="form-control">
+                                                        </td>
+                                                        <td class="font-weight-bold text-center">
+                                                            قیمت
+                                                        </td>
+                                                        <td>
+                                                        <input id="price" type="number" name="productprice" class="form-control">
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    
+                                                </table>
+                    
+                    
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">بستن</button>
+                    
+                                                    <button id="products_parametr" type="button" class="btn btn-success"
+                                                        data-bs-dismiss="modal">ایجاد</button>
+                                                </div>
+                    
+                                            </form>
+                                        </div><!-- End .col-lg-9 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+            </main><!-- End .main -->
+        </div><!-- End .page-wrapper -->
+        <script>
+            $('.single-select').selectpicker();
+        </script>
+        {% endif %}
+        {% endif %}
+        {% endblock %}

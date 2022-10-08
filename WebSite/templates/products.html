@@ -1,0 +1,611 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+{% load my_templatetag %}
+
+{% block title %}
+{{ super }} جزئیات کالا ها|
+{% endblock %}
+
+
+{% block body %}
+
+<div class="page-wrapper" >
+    
+    {% include 'partials/header-h2.html' %}
+    <main class="main" >
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container-fluid d-flex align-items-center border-bottom border-black">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item"><a class="font-weight-bold" 
+                            href="{% url 'WebSite:login' %}">خانه</a>
+                    </li>
+                    {% for shp in showproduct %}
+                    {% if showproduct %}
+                    <li class="breadcrumb-item"><a class="font-weight-bold" 
+                            href="{% url 'WebSite:advancedsearchProducts' shp.group_id %}"> {{ shp.group }} </a></li>
+
+
+                    <li class="breadcrumb-item"><a class="font-weight-bold"  href="#">
+                            نمایش جزئیات کالای
+                            {{ shp.name }}</a></li>
+
+                    {% endif %}
+                    {% endfor %}
+
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content" style="margin-top: 1%; font-family: sans-serif;">
+            <div class="container-fluid">
+                <div class="product-details-top">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">
+                            <div class="product-gallery product-gallery-vertical">
+                                <div class="row">
+                                    {% for shp in showproduct %}
+                                    {% if showproduct %}
+                                    <figure class="product-main-image">
+
+                                     
+                                        <div class="col-12">
+                                            {% for max_min_chose in max_min_price_info_choseproduct %}
+                                                {% if max_min_chose and max_min_chose.0 == shp.id and  0 > max_min_chose.5  %}
+                                                    <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                                                {% else %}
+                                                    {% if max_min_chose and max_min_chose.0 == shp.id and max_min_chose.6 != 0 %}
+                                                        <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div> 
+                                   
+                                        
+
+                                        <img id="product-zoom" src="{% static 'media/' %}{{ shp.img1 }}"
+                                            data-zoom-image="{% static 'media/' %}{{ shp.img1 }}" alt="">
+
+                                        <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                            <i class="icon-arrows"></i>
+                                        </a>
+                                    </figure><!-- End .product-main-image -->
+
+                                    <div id="product-zoom-gallery" class="product-image-gallery">
+                                        {% if shp.img1 %}
+                                        <a class="product-gallery-item  " href="#"
+                                            data-image="{% static 'media/' %}{{ shp.img1 }}"
+                                            data-zoom-image="{% static 'media/' %}{{ shp.img1 }}">
+                                            <img src="{% static 'media/' %}{{ shp.img1 }}"
+                                                style="width: 100%; max-height: 90px;"
+                                                 product side>
+                                        </a>
+                                        {% endif %}
+                                        {% if shp.img2 %}
+                                        <a class="product-gallery-item  " href="#"
+                                            data-image="{% static 'media/' %}{{ shp.img2 }}"
+                                            data-zoom-image="{% static 'media/' %}{{ shp.img2 }}">
+                                            <img src="{% static 'media/' %}{{ shp.img2 }}"
+                                                style="width: 100%; max-height: 90px;"
+                                                 product side>
+                                        </a>
+                                        {% endif %}
+                                        {% if shp.img3 %}
+                                        <a class="product-gallery-item" href="#"
+                                            data-image="{% static 'media/' %}{{ shp.img3 }}"
+                                            data-zoom-image="{% static 'media/' %}{{ shp.img3 }}">
+                                            <img src="{% static 'media/' %}{{ shp.img3 }}"
+                                                style="width: 100%; max-height: 90px;"
+                                                 product side>
+                                        </a>
+                                        {% endif %}
+                                        {% if shp.img4 %}
+                                        <a class="product-gallery-item  " href="#"
+                                            data-image="{% static 'media/' %}{{ shp.img4 }}"
+                                            data-zoom-image="{% static 'media/' %}{{ shp.img4 }}">
+                                            <img src="{% static 'media/' %}{{ shp.img4 }}"
+                                                style="width: 100%; max-height: 90px;"
+                                                 product side>
+                                        </a>
+                                        {% endif %}
+                                    </div><!-- End .product-image-gallery -->
+                                </div><!-- End .row -->
+                            </div><!-- End .product-gallery -->
+                        </div><!-- End .col-md-6 -->
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  float-right justify border-right">
+                            <div class="product-details border-bottom p-3">
+
+                                <h1 class="product-title" >{{ shp.name }}</h1>
+                                <span class="product-title mt-2 text-sm" >کد : {{ shp.serial }}</span>
+                                {% for sr in StarAvarage_percent %}
+                                {% if sr.0 == shp.id %}
+                                <div class="ratings mb-2" >
+                                    
+                                    <div class="ratings-val "  style="width: {{ sr.1 }}%;"></div>
+                                    
+                                    <!-- End .ratings-val -->
+                                </div><!-- End .ratings -->
+                                {% endif %}
+                                {% endfor %}
+                                <div  id="2parametrpricecalculated" class="product-price col-12 fw-bold text-center h4 text-success">
+                                    
+                                </div>
+                                <div  id="pricecalculated" class="product-price col-12 fw-bold text-center h4 text-success">
+                                    
+                                </div>
+                                <div id="oldpricecalculated" class="product-price col-12 fw-bold text-center h4 text-success">
+                                    {% for max_min_chose in max_min_price_info_choseproduct %}
+                                    {% if max_min_chose and max_min_chose.0 == shp.id %}
+                                    {% if max_min_chose.6 == 0 %}
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h4">{{ max_min_chose.2|intdot }} ریال</p>
+                                    {% else %}
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-success h4">{{ max_min_chose.7|intdot }} ریال</p>
+                                    <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h4">{{ max_min_chose.2|intdot }} ریال</p>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endfor %}                                 
+                                </div><!-- End .product-price -->
+                                <div class="row mb-1">
+                                <div class="float-start col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {% if user.is_authenticated %}
+                                    <div onclick="addbascket('{{shp.id}}','{{ shp.name }}','{{shp.img1}}')"
+                                        class="btn btn-success shadow rounded fw-bold p-3" 
+                                        style="border-radius: 5px;">
+                                        <span >افزودن به سبد
+                                            خرید</span>
+                                    </div>
+                                    {% else %}
+                                    <div id ="openlogin"
+                                        class="btn btn-success shadow rounded  fw-bold p-3" 
+                                        style="border-radius: 5px;">
+                                        <a id="enter" class="text-white" href="{% url 'WebSite:login' %}" data-toggle="modal"
+                                            data-target="#loginmodal" tabindex="-1" role="dialog" aria-modal="true">
+                                            افزودن به سبد
+                                            خرید</a>
+                                    </div>
+                                    {% endif %}
+                        
+                                </div><!-- End .product-details-action -->
+                                <div class="float-end col-lg-6 col-md-6 col-sm-12 col-12 ">
+
+                                    <div class="border border-warning fw-bold text-dark text-center p-2 m-1 h5 col-12">
+                                    موجودی : <span id="param_inverntory" class="fw-bold text-dark h5 text-center p-3"></span> عدد
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="row">
+                                    {% if shp.guarantee %}
+                                    <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6"
+                                        style="direction: rtl; text-align: right; font-family: sans-serif;">
+                                        <p>گارانتی :</p>
+                                        
+                                        <img src="{% static 'media/keys/tik.png' %}" style="display: inline-block;">
+                                        <p style="display: inline-block; font-family: sans-serif;">دارای
+                                            {{shp.guaranteecount}} &nbsp;&nbsp;سال گارانتی .
+                                        </p>
+                                        
+                                    </div>
+                                    {% endif %}
+                                    {% if shp.guarantee %}
+                                    <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6"
+                                        style="direction: rtl; text-align: right; font-family: sans-serif;">
+                                        <p  class="fw-bold text-dark h-6">خدمات پس از فروش :</p>
+                                        
+                                        <img src="{% static 'media/keys/tik.png' %}" style="display: inline-block;">
+                                        <p style="display: inline-block; font-family: sans-serif;">دارای
+                                            {{shp.supportaftersalecount}}&nbsp;&nbsp; سال خدمات
+                                            پس از فروش .</p>
+                                        
+                                    </div>
+                                    {% endif %}
+                                 
+                                </div>
+                          
+                                
+                                <div class="row">
+                                <input id="get_p_id" value="{{ shp.id }}" type="hidden" name="getproductid">
+
+                                
+                                <div id="accordion">
+                                    <div>
+                                      <div class="card-header" id="headingOne">
+                                        <h5 class="mb-0">
+                                          <button class="btn btn-link h5 text-dark fw-bold" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            انتخاب بر اساس سایز
+                                          </button>
+                                        </h5>
+                                      </div>
+                                  
+                                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 float-start">
+                                                    <p class="fw-bold text-dark h-6">سایز :</p>
+                                                
+                                                    <select id="get_size_id" class="single-select form-control shadow" style="border: 2px red solid; border-radius:10px;" >
+                                                        <option value="0">---------</option>
+                                                        {% for si in size %}
+                                                            {% if shp.id == si.1 %}
+                                                            <option  value="{{ si.2 }}" style="color:black;" >{{ si.0 }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 float-end">
+                                                    <p  class="fw-bold text-dark">رنگ :</p>
+                                                    <select id="get_color_id" class="single-select form-control shadow" style="border: 2px black solid; border-radius:10px;" >
+                                                
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div >
+                                      <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                          <button class="btn btn-link collapsed h5 text-dark fw-bold" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            انتخاب بر اساس رنگ
+                                          </button>
+                                        </h5>
+                                      </div>
+                                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="row" id="getparametrid" >
+                                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 float-start">
+                                                    <p class="fw-bold text-dark h-6">رنگ :</p>
+                                                    
+                                                    <select id="color_id" class="single-select form-control shadow " style="border: 2px red solid; border-radius:10px;" name="color_id">
+                                                        <option value="0">---------</option>
+                                                        {% for co in color %}
+                                                            {% if shp.id == co.1 %}
+                                                            <option  value="{{ co.3 }}" style="color:black; background-color: {{ co.2 }}" >{{ co.0 }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 float-end">
+                                                    <p  class="fw-bold text-dark">سایز :</p>
+                                                    <select id="size_id" class="single-select form-control shadow " style="border: 2px black solid; border-radius:10px;" name="size_id">
+                                                
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                  </div>
+                                
+                                </div>
+                         
+                            </div>
+                           
+                              
+                                {% include 'StarRating.html' %}
+                          
+                                
+                         
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 float-left border-right">
+                            <div class="product-content p-3 "
+                                style="font-family: sans-serif; background-color: whitesmoke;">
+                                <p class="text-justify text-wrap fw-bold text-dark h6">
+                                    
+                                   مشتری گرامی :
+                                </p>
+                                <p class="text-justify text-wrap fw-bold text-dark h6">
+                                    
+                                    مشتری گرامی : حتما اندازه ها چک شود. بین یک تا دوسانت خطا در نظر گرفته شود 
+                                 </p>
+                            </div>
+                            <div class="product-content p-3 "
+                                style="font-family: sans-serif; background-color: whitesmoke;">
+                                <p class="text-justify text-wrap fw-bold text-dark h6" style="font-family: sans-serif; font-size: medium;">
+                                    
+                                    {{ shp.desc }}
+                                </p>
+                            </div>
+                            <div class="product-content p-3 " id="param_pdesc"
+                                style="font-family: sans-serif; background-color: whitesmoke;">
+                               
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div><!-- End .product-details -->
+                        <div class="row border-top d-flex justify-content-left">
+                            <div class="social-icons social-icons-sm mt-2 d-flex justify-content-left">
+
+                                <span class="social-label" >اشتراک گذاری : </span>
+                                {% for shp in showproduct %}
+                                {% if showproduct %}
+
+                                <a href="https://wa.me?text=http://WebSiteProject.ir/category/productlist/showproduct/{{ shp.id }}/{{ shp.name|urlreplace }}"
+                                    rel="nofollow" target="_blank">
+                                    <img src="{% static 'media/SocialMedia/whatsapp.png' %}"
+                                        style=" filter: grayscale(100%);" class="p-1 social"
+                                         width="30"
+                                        height="30"></a>
+
+                                <a href="https://telegram.me/share/url?url=http://WebSiteProject.ir/category/productlist/showproduct/{{ shp.id }}/{{ shp.name|urlreplace }}"
+                                    rel="nofollow" target="_blank">
+                                    <img src="{% static 'media/SocialMedia/telegram.png' %}"
+                                        style=" filter: grayscale(100%);" class="p-1 social"
+                                         width="30"
+                                        height="30"></a>
+
+                                <a href="https://twitter.com/intent/tweet?url=http://WebSiteProject.ir/category/productlist/showproduct/{{ shp.id }}/{{ shp.name|urlreplace }}"
+                                    title="توییتر" target="_blank"><img
+                                        src="{% static 'media/SocialMedia/twitter.png' %}" class="p-1 social"
+                                         width="30"
+                                        height="30"></a>
+
+                                <a href="https://www.facebook.com/?url=http://WebSiteProject.ir/category/productlist/showproduct/{{ shp.id }}/{{ shp.name|urlreplace }}"
+                                    title="فیس بوک" target="_blank"><img
+                                        src="{% static 'media/SocialMedia/facebook.png' %}" class="p-1 social"
+                                        alt="" width="30"
+                                        height="30"></a>
+
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div><!-- End .col-md-6 -->
+
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
+
+
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
+                            role="tab" aria-controls="product-desc-tab" aria-selected="true"
+                            >درباره محصول</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab"
+                            aria-controls="product-info-tab" aria-selected="false"
+                            >اطلاعات بیشتر</a>
+                    </li>
+                    {% comment %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab"
+                            role="tab" aria-controls="product-shipping-tab" aria-selected="false"
+                            >ارسال و بازگشت</a>
+                    </li>
+                    {% endcomment %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab"
+                            role="tab" aria-controls="product-review-tab" aria-selected="true"
+                            >نظرات
+                            ({{CommentCount}})</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+                        aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <h3>درباره محصول : </h3>
+                            {% if aboutproduct.0.desc_1 != None %}
+                            {% for ap in aboutproduct %}
+                            {% if forloop.last %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-8 float-right">
+                                        <p
+                                            style="text-align: justify; text-justify:inter-word; font-family: sans-serif; font-size: medium; font-weight: bold;">
+                                            {{ ap.desc_1 }}</p>
+                                    </div>
+                                    <div class="col-4 float-left"> <img
+                                            src="{% if ap.0.img_desc_1 != None %}{% static 'media/' %}{{ ap.img_desc_1 }}{% else %}{% endif %}">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-4 float-right"> <img
+                                            src="{% if ap.0.img_desc_2 != None %}{% static 'media/' %}{{ ap.img_desc_2 }}{% else %}{% endif %}">
+                                    </div>
+                                    <div class="col-8 float-left">
+                                        <p
+                                            style="text-align: justify; text-justify:inter-word; font-family: sans-serif; font-size: medium;  font-weight: bold;">
+                                            {{ ap.desc_2 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-info-tab" role="tabpanel"
+                        aria-labelledby="product-info-link">
+                        <div class="product-desc-content">
+                            <h3>اطلاعات بیشتر : </h3>
+                            {% if technicalinfo.0.desc_3 != None %}
+                            {% for ti in technicalinfo %}
+                            {% if forloop.last %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-8 float-right">
+                                        <p
+                                            style="text-align: justify; text-justify:inter-word; font-family: sans-serif;">
+                                            {{ ti.desc_3 }}</p>
+                                    </div>
+                                    <div class="col-4 float-left"> <img src="{% static 'media/' %}{{ ti.img_desc_3 }}">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+
+                    <div class="tab-pane fade" id="product-review-tab" role="tabpanel"
+                        aria-labelledby="product-review-link">
+                        <div class="reviews">
+                            <h3>نظر ({{CommentCount}})</h3>
+                            <form id="addcomment" action="">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="Head" placeholder="عنوان..." required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="com" cols="40" rows="10" class="form-control" maxlength="4000"
+                                        required></textarea>
+                                </div>
+                                <button class="btn btn-primary form-control" type="submit">افزودن نظر</button>
+                            </form>
+                            {% for Comments in Comments %}
+                            <div class="review">
+                                <div class="row no-gutters">
+                                    <div class="col-auto">
+                                        <h4><a href="#" >
+                                                {% for User in Users %}
+                                                {% if User.id == Comments.Create_Uid %}
+                                                {{ User.first_name }} {{ User.last_name }}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 80%;"></div>
+                                                <!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                        </div><!-- End .rating-container -->
+                                        <span class="review-date" >{{ Comments.Create_Date }}</span>
+                                    </div><!-- End .col -->
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h4>{{Comments.Head}}</h4>
+
+                                        <div class="review-content">
+                                            <p >{{Comments.com}}</p>
+                                        </div><!-- End .review-content -->
+                                    </div><!-- End .col-auto -->
+                                </div><!-- End .row -->
+                            </div><!-- End .review -->
+                            {% endfor %}
+                        </div><!-- End .نظر -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+
+
+            <h2 class="title text-center mb-4 " >محصولاتی که شاید بپسندید</h2>
+            <hr class="border-bottom border-black" />
+            <!-- End .title text-center -->
+
+                <div >
+                    <div class="owl-carousel " data-toggle="owl" data-owl-options='{
+                        "nav": true, 
+                        "dots": true,
+                        "loop": false,
+                        "margin":5,
+                        "stagePadding": 30,
+                        "responsive": true,
+                        "mouseDrag": true,
+                        "touchDrag": true,
+
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "360": {
+                                "items":2
+                            },
+                            "600": {
+                                "items":4
+                            },
+                            "992": {
+                                "items":5
+                            },
+                            "1200": {
+                                "items":6
+                            }
+                        }
+                    }'>
+                    {% if groupproducts %}
+                    {% for pg in groupproducts %}
+                    <div class="product product-7 text-center shadow border" style="border-radius: 10px;" >
+                        <figure class="product-media">
+                            <div class="col-12">
+                                {% for max_min_sg in max_min_price_info_samegroup %}
+                                    {% if max_min_sg and max_min_sg.0 == pg.id and  0 > max_min_sg.5  %}
+                                        <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">ناموجود</span>
+                                    {% else %}
+                                        {% if max_min_sg and max_min_sg.0 == pg.id and max_min_sg.6 != 0 %}
+                                            <span style="border-radius: 5px;" class="product-label bg-danger fw-bold text-white shadow">فروش ویژه</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div> 
+
+                            <a href="{% url 'WebSite:showproduct' pg.id pg.name|urlreplace %}">
+                                <img style="max-height: 200px; background: white;" src="{% static 'media/' %}{{ pg.img1 }}" alt="" class="product-image">
+                            </a>
+
+                            <div class="product-action-vertical">
+                           
+                                <div onclick="addFavorite({{ pg.id }},'{{ pg.name }}','{{pg.img1}}')"
+                                    class="btn-product-icon btn-wishlist btn-expandable" style="cursor: pointer;">
+                                    <span>افزودن
+                                        به لیست علاقه مندی</span>
+                                </div>
+                        
+                                <a href="{% static 'popup/quickView.html' %}" class="btn-product-icon btn-quickview"
+                                    title="مشاهده سریع"><span>مشاهده سریع</span></a>
+
+                            </div>
+
+                            <div class="product-action">
+
+                            </div><!-- End .product-action -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            {% for sr in StarAvarage_percent %}
+                                            
+                                {% if sr.0 == pg.id %}
+                                <div class="ratings mb-2">
+                                    
+                                    <div class="ratings-val "  style="width: {{ sr.1 }}%;"></div>
+                                    
+                                    <!-- End .ratings-val -->
+                                </div><!-- End .ratings -->
+                                {% endif %}
+                                {% endfor %}
+                            <div class="product-cat text-center">
+                                <a class=" text-center  text-dark" href="{% url 'WebSite:showproduct' pg.id pg.name|urlreplace %}">{{ pg.name }}</a>
+                            </div><!-- End .product-cat -->
+                           
+                            <!-- End .product-title -->
+                            <div class="product-price" >
+                                {% for max_min_sg in max_min_price_info_samegroup %}
+                                {% if max_min_sg and max_min_sg.0 == pg.id %}
+                                {% if max_min_sg.6 == 0 %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center text-dark h6">{{ max_min_sg.2|intdot }} ریال</p>
+                                {% else %}
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center new-price text-dark h6">{{ max_min_sg.7|intdot }} ریال</p>
+                                <p class="col-lg-12 col-md-12 col-sm-12 col-12 fw-bold text-center old-price text-danger h6">{{ max_min_sg.2|intdot }} ریال</p>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}  
+                            </div><!-- End .product-price -->
+                            
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                    {% endfor %}
+                    {% endif %}
+
+                </div><!-- End .owl-carousel -->
+            </div><!-- End .page-content -->
+        </div>
+
+    </main><!-- End .main -->
+</div>
+{% include 'partials/footer-small.html' %}
+{% include 'partials/mobile-menu.html' %}
+{% endblock %}

@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="rtl">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8" content="*">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'media/faveicon/faveicon.jpg' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="G.W.APP">
+    <meta name="description" content="Gold Web APP">
+    <meta name="author" content="Avash.b">
+    <!-- Favicon -->
+    <meta name="apple-mobile-web-app-title" content="WebSite.S.APP">
+    <meta name="application-name" content="WebSite.S.APP">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/simplebar/css/simplebar.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/plugins/perfectscrollbar/css/perfectscrollbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/plugins/metismenu/css/metisMenu.min.css' %}" />
+    <link href="{% static 'assets/plugins/select2/css/select2.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/plugins/select2/css/select2-bootstrap4.css' %}" rel="stylesheet" />
+    <!-- loader-->
+
+    <link rel="stylesheet" href="{% static 'assets/css/pace.min.css' %}" />
+    <script src="{% static 'assets/js/pace.min.js' %}"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css' %}">
+    <link href="{% static 'assets/plugins/datatable/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/MainCSS.css' %}">
+    <!-- Main JS File -->
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome-free-5.15.1-web/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/select.dataTables.min.css' %}">
+
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+
+</head>
+
+<body class="rtl">
+    {% block body %}
+
+    {% endblock %}
+
+</body>
+<!-- Bootstrap JS -->
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<!-- Plugins JS File -->
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="/static/assets/js/app.js"></script>
+<script src="{% static 'assets/plugins/simplebar/js/simplebar.min.js' %}"></script>
+<script src="{% static 'assets/plugins/metismenu/js/metisMenu.min.js' %}"></script>
+<script src="{% static 'assets/plugins/perfectscrollbar/js/perfectscrollbar.js' %}"></script>
+<script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+
+<script src="{% static 'assets/plugins/input-tags/js/tagsinput.js' %}"></script>
+<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fancy-file-uploader/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'assets/plugins/fancy-file-uploader/jquery.fileupload.js' %}"></script>
+<script src="{% static 'assets/plugins/fancy-file-uploader/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js' %}"></script>
+<script src="{% static 'assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.select.min.js' %}"></script>
+
+<script>
+    $('#fancy-file-upload').FancyFileUpload({
+        params: {
+            action: 'fileuploader'
+        },
+        maxfilesize: 1000000
+    });
+
+    $('#image-uploadify').imageuploadify();
+
+    $('.single-select').select2({
+        theme: 'bootstrap4',
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        allowClear: Boolean($(this).data('allow-clear')),
+    });
+    $('.multiple-select').select2({
+        theme: 'bootstrap4',
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        allowClear: Boolean($(this).data('allow-clear')),
+    });
+</script>
+{% include 'partials/link.html' %}
+
+</html>
