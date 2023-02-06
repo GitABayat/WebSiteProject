@@ -86,8 +86,17 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-
-                        $('#ParametrsThatCreated').html(data.htmlheader + data.html + data.htmlfooter)
+                        $('th#pr0nameHead').html(data.prname0)
+                        $('th#pr1nameHead').html(data.prname1)
+                        $('th#pr2nameHead').html(data.prname2)
+                        $('th#pr3nameHead').html(data.prname3)
+                        $('th#pr4nameHead').html(data.prname4)
+                        $('th#pr5nameHead').html(data.prname5)
+                        $('th#pr6nameHead').html(data.prname6)
+                        $('th#pr7nameHead').html(data.prname7)
+                        $('th#pr8nameHead').html(data.prname8)
+                        $('th#pr9nameHead').html(data.prname9)
+                        $('#ParametrsThatCreated').html(data.html)
                         $('#CreatePorductsParamFinalSave').removeAttr('disabled')
 
                     }

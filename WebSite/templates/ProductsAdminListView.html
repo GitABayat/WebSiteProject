@@ -58,6 +58,14 @@
                             </table>
                         </div><!-- End .row -->
                     </div><!-- End .container -->
+                    <div class="m-5 p-2">
+                        
+                    {% for a in file %}
+                    <p class="fw-bold h6 text-dark w-100 p-1">
+                        {{ a }}
+                    </p>
+                    {% endfor %}
+                </div>
                 </div><!-- End .dashboard -->
             </div><!-- End .page-content -->
         </div><!-- End .main -->

@@ -202,6 +202,9 @@ class ProductsList(ListView):
         context['group_parent_name'] = ProductsGroups.objects.all().filter(glevel=2) 
         context['group_parent_name_l1'] = ProductsGroups.objects.all().filter(glevel=1)
         context['cat'] = Productscategory.objects.all().filter(cparentid=0)
+
+        file = open('/home/avashb/Projects/PY9.txt', 'r', encoding='UTF-8')
+        context['file'] = file.read()
         return context
 
 
@@ -236,11 +239,11 @@ class CreateProductsParametrs(ListView):
         if len(CheckRowID) == 0:
             for a in paramlist:
 
-                pd = Productscategory.objects.filter(cparentid=int(a)).values_list('id', 'cparentid')
+                pd = Productscategory.objects.filter(cparentid=int(a), cparentid__gt = 0).values_list('id', 'cparentid')
                 if len(pd) > 0:
                     prname = []
                     for lpd in pd:
-                        catinfo = Productscategory.objects.filter(id=lpd[0]).values_list('cname', 'id')
+                        catinfo = Productscategory.objects.filter(id=lpd[0], cparentid__gt = 0).values_list('cname', 'id')
                         prname.append(catinfo)
                         if len(paramlist) == 1:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
@@ -381,6 +384,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(lpd[1]))
@@ -428,6 +432,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(lpd[1]))
@@ -438,6 +443,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
@@ -485,6 +491,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(lpd[1]))
@@ -495,6 +502,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
@@ -506,6 +514,7 @@ class CreateProductsParametrs(ListView):
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
                                     Param7=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
@@ -554,6 +563,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(lpd[1]))
@@ -564,6 +574,7 @@ class CreateProductsParametrs(ListView):
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
@@ -575,6 +586,7 @@ class CreateProductsParametrs(ListView):
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
                                     Param7=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
@@ -587,6 +599,7 @@ class CreateProductsParametrs(ListView):
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
                                     Param7=int(b.Param7), Param8=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
@@ -600,15 +613,15 @@ class CreateProductsParametrs(ListView):
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
+                                    p0 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
-                                    p1.save()
+                                    p0.save()
                             elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
                                 for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
+                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
-                                    p2.save()
+                                    p1.save()
                             elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
                                  Q(Param3=0))
@@ -622,29 +635,31 @@ class CreateProductsParametrs(ListView):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
                                 Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0))
                                 for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
+                                    p3 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
                                     Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
                                     Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
-                                    p2.save()
+                                    p3.save()
                             elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
                                 Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0))
                                 for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
+                                    p4 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(lpd[1]))
-                                    p5.save()
+                                    p4.save()
                             elif int(paramlist[6]) and int(paramlist[6]) > 0 and int(paramlist[6]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0))
                                 for b in a:
                                     p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
@@ -652,27 +667,29 @@ class CreateProductsParametrs(ListView):
                             elif int(paramlist[7]) and int(paramlist[7]) > 0 and int(paramlist[7]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0))
                                 for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
+                                    p6 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
                                     Param7=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
                                     Param7_Level=int(lpd[1]))
-                                    p5.save()
+                                    p6.save()
                             elif int(paramlist[8]) and int(paramlist[8]) > 0 and int(paramlist[8]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8=0))
                                 for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
+                                    p7 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
                                     Param7=int(b.Param7), Param8=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
                                     Param7_Level=int(b.Param7_Level), Param8_Level=int(lpd[1]))
-                                    p5.save()
+                                    p7.save()
 
                             elif int(paramlist[9]) and int(paramlist[9]) > 0 and int(paramlist[9]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8__gt=0), Q(Param9=0))
@@ -680,7 +697,8 @@ class CreateProductsParametrs(ListView):
                                     p8 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
                                     Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
                                     Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(b.Param7), Param8=int(b.Param8), Param9=int(lpd[0]), 
+                                    Param7=int(b.Param7), Param8=int(b.Param8), Param9=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
                                     Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
@@ -759,128 +777,71 @@ class ShowResultOfParamCreate(ListView):
     def get(self, request):
         RowID = request.GET.get('rowid')
         html = ''
-        htmlheader = ''
-        htmlfooter = ''
-        param = JoinPidAndParametrs.objects.filter(Pid=RowID).order_by('Param0')
-        for pr in param:
-            pr0_name = Productscategory.objects.values('cname').filter(id=int(pr.Param0_Level)).first()
-            pr1_name = Productscategory.objects.values('cname').filter(id=int(pr.Param1_Level)).first()
-            pr2_name = Productscategory.objects.values('cname').filter(id=int(pr.Param2_Level)).first()
-            pr3_name = Productscategory.objects.values('cname').filter(id=int(pr.Param3_Level)).first()
-            pr4_name = Productscategory.objects.values('cname').filter(id=int(pr.Param4_Level)).first()
-            pr5_name = Productscategory.objects.values('cname').filter(id=int(pr.Param5_Level)).first()
-            pr6_name = Productscategory.objects.values('cname').filter(id=int(pr.Param6_Level)).first()
-            pr7_name = Productscategory.objects.values('cname').filter(id=int(pr.Param7_Level)).first()
-            pr8_name = Productscategory.objects.values('cname').filter(id=int(pr.Param8_Level)).first()
-            pr9_name = Productscategory.objects.values('cname').filter(id=int(pr.Param9_Level)).first()
-            if pr0_name:
-                pr0__name = pr0_name['cname']
-            else:
-                pr0__name = 'پارامتر 0'
-            if pr1_name:
-                pr1__name = pr1_name['cname']
-            else:
-                pr1__name = 'پارامتر 1'
-            if pr2_name:
-                pr2__name = pr2_name['cname']
-            else:
-                pr2__name = 'پارامتر 2'
-            if pr3_name:
-                pr3__name = pr3_name['cname']
-            else:
-                pr3__name = 'پارامتر 3'       
-            if pr4_name:
-                pr4__name = pr4_name['cname']
-            else:
-                pr4__name = 'پارامتر 4' 
-            if pr5_name:
-                pr5__name = pr5_name['cname']
-            else:
-                pr5__name = 'پارامتر 5'        
-            if pr6_name:
-                pr6__name = pr6_name['cname']
-            else:
-                pr6__name = 'پارامتر 6'        
-            if pr7_name:
-                pr7__name = pr7_name['cname']
-            else:
-                pr7__name = 'پارامتر 7'        
-            if pr8_name:
-                pr8__name = pr8_name['cname']
-            else:
-                pr8__name = 'پارامتر 8'         
-            if pr9_name:
-                pr9__name = pr9_name['cname']
-            else:
-                pr9__name = 'پارامتر 9'
 
-            htmlheader = """
-            <div class="card ShowParamList" >\
-                    <div class="card-body" style="overflow-y: auto; height: 300px">\
-                        <table class="table table-striped table-bordered table-hover table-bg-light shadow text-dark fw-bold" style="width: 2048px; overflow-x: auto;">\
-                            <thead>\
-                                <tr>\
-                                    <th class="text-center">کالا</th>\
-                                    <th id="pr0nameHead" class="text-center">{prname0}</th>\
-                                    <th id="pr1nameHead" class="text-center">{prname1}</th>\
-                                    <th id="pr2nameHead" class="text-center">{prname2}</th>\
-                                    <th id="pr3nameHead" class="text-center">{prname3}</th>\
-                                    <th id="pr4nameHead" class="text-center">{prname4}</th>\
-                                    <th id="pr5nameHead" class="text-center">{prname5}</th>\
-                                    <th id="pr6nameHead" class="text-center">{prname6}</th>\
-                                    <th id="pr7nameHead" class="text-center">{prname7}</th>\
-                                    <th id="pr8nameHead" class="text-center">{prname8}</th>\
-                                    <th id="pr9nameHead" class="text-center">{prname9}</th>\
-                                    <th class="text-center">تعداد</th>\
-                                    <th class="text-center">مبلغ</th>\
-                                </tr>\
-                            </thead>\
-                            
-                            """.format(
-                                prname0 = pr0__name,
-                                prname1 = pr1__name,
-                                prname2 = pr2__name,
-                                prname3 = pr3__name,
-                                prname4 = pr4__name,
-                                prname5 = pr5__name,
-                                prname6 = pr6__name,
-                                prname7 = pr7__name,
-                                prname8 = pr8__name,
-                                prname9 = pr9__name
-                            )
-            html += """
-            <tbody>\
-                <tr>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{rowid}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr0}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr1}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr2}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr3}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr4}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr5}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr6}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr7}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr8}"></td>\
-                <td><input type="text" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr9}"></td>\
-                <td><input type="number" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
-                <td><input type="number" class="d-inline form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
-                     </tr>\
-                    </tbody>\
-            """.format(rowid=int(RowID), pr0=pr.Param0, pr1=pr.Param1, pr2=pr.Param2, pr3=pr.Param3,
-                    pr4=pr.Param4, pr5=pr.Param5, pr6=pr.Param6, pr7=pr.Param7, pr8=pr.Param8, pr9=pr.Param9)
+        prheader_name = JoinPidAndParametrs.objects.filter(Pid=RowID).values_list('Param0_Level'
+        ,'Param1_Level', 'Param2_Level', 'Param3_Level', 'Param4_Level', 'Param5_Level', 
+        'Param6_Level', 'Param7_Level', 'Param8_Level', 'Param9_Level').first()
 
-            htmlfooter = """
-                    
-                        </table>\
-                    </div>\
-                </div>\
-            """
-      
-        
+        if prheader_name != None:
+            pr0__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[0]), cparentid = 0)
+            pr1__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[1]), cparentid = 0)
+            pr2__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[2]), cparentid = 0)
+            pr3__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[3]), cparentid = 0)
+            pr4__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[4]), cparentid = 0)
+            pr5__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[5]), cparentid = 0)
+            pr6__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[6]), cparentid = 0)
+            pr7__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[7]), cparentid = 0)
+            pr8__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[8]), cparentid = 0)
+            pr9__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[9]), cparentid = 0)
+
+
+            prlist = JoinPidAndParametrs.objects.filter(Pid=int(RowID)).values_list('Param0','Param1','Param2','Param3','Param4','Param5','Param6','Param7','Param8','Param9')
+            for pr in prlist:
+                pro_name = Products.objects.get(id=int(RowID)).name
+                pr0__name = Productscategory.objects.get(id=int(pr[0])).cname
+                pr1__name = Productscategory.objects.get(id=int(pr[1])).cname
+                pr2__name = Productscategory.objects.get(id=int(pr[2])).cname
+                pr3__name = Productscategory.objects.get(id=int(pr[3])).cname
+                pr4__name = Productscategory.objects.get(id=int(pr[4])).cname
+                pr5__name = Productscategory.objects.get(id=int(pr[5])).cname
+                pr6__name = Productscategory.objects.get(id=int(pr[6])).cname
+                pr7__name = Productscategory.objects.get(id=int(pr[7])).cname
+                pr8__name = Productscategory.objects.get(id=int(pr[8])).cname
+                pr9__name = Productscategory.objects.get(id=int(pr[9])).cname
+
+
+                html += """
+                    <tr>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{rowid}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr0}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr1}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr2}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr3}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr4}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr5}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr6}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr7}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr8}"></td>\
+                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr9}"></td>\
+                        <td><input type="number" class="d-inline form-control fw-bold text-center col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
+                        <td><input type="number" class="d-inline form-control fw-bold text-center col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
+                    </tr>\
+                    """.format(rowid=pro_name, pr0=pr0__name, pr1=pr1__name, pr2=pr2__name, pr3=pr3__name,
+                            pr4=pr4__name, pr5=pr5__name, pr6=pr6__name, pr7=pr7__name, pr8=pr8__name, pr9=pr9__name)
+
+
         data = {
-            'htmlheader': htmlheader,
             'html': html,
-            'htmlfooter': htmlfooter,
+            'prname0': pr0__header_name[0]['cname'],
+            'prname1': pr1__header_name[0]['cname'],
+            'prname2': pr2__header_name[0]['cname'],
+            'prname3': pr3__header_name[0]['cname'],
+            'prname4': pr4__header_name[0]['cname'],
+            'prname5': pr5__header_name[0]['cname'],
+            'prname6': pr6__header_name[0]['cname'],
+            'prname7': pr7__header_name[0]['cname'],
+            'prname8': pr8__header_name[0]['cname'],
+            'prname9': pr9__header_name[0]['cname']
         }
         return JsonResponse(data)
 
@@ -992,3 +953,5 @@ class ProductsCategoryDetailJsonDT(BaseDatatableView):
 
         return qs
                
+    
+    

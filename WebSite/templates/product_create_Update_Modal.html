@@ -279,12 +279,12 @@
                                                 value="{% if ErrorText %}{% for t in ErrorText %}{{ t }}{% endfor %}{% endif %}">
                                             <div class="container mt-3 mb-4">
                                                 {% for cat in cat %}
-                                                <div class="d-inline border radius-10 p-2 m-2 shadow SelectBox">
-                                                    <input type="checkbox"
-                                                        class="form-check-input CategoryForSelect m-1 SelectBoxInput"
-                                                        value="{{ cat.id }}">
-                                                    <label class="fw-bold text-center m-1">{{ cat.cname }}</label>
-                                                </div>
+                                                
+                                                    <div class="d-inline border radius-10 p-2 m-2 shadow SelectBox" style="overflow-x: true;">
+                                                        <input type="checkbox" class="form-check-input CategoryForSelect m-1 w-10 SelectBoxInput" value="{{ cat.id }}">
+                                                        <label class="fw-bold text-center m-1">{{ cat.cname }}</label>
+                                                    </div>
+                                                
                                                 {% endfor %}
 
                                             </div>
@@ -296,12 +296,36 @@
                                                     <i class="fa fa-plus"></i> ایجاد ردیف های پارامتر ها
                                                 </button>
                                             </div>
-                                            <div id="ParametrsThatCreated">
-
+                                            <div >
+                                                <div class="card ShowParamList">
+                                                    <div class="card-body" style="overflow-y: auto; height: 300px">
+                                                        <table class="table table-striped table-bordered table-hover table-bg-light shadow text-dark fw-bold"
+                                                            style="width: 2048px; overflow-x: auto;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">کالا</th>
+                                                                    <th id="pr0nameHead" class="text-center">***</th>
+                                                                    <th id="pr1nameHead" class="text-center">***</th>
+                                                                    <th id="pr2nameHead" class="text-center">***</th>
+                                                                    <th id="pr3nameHead" class="text-center">***</th>
+                                                                    <th id="pr4nameHead" class="text-center">***</th>
+                                                                    <th id="pr5nameHead" class="text-center">***</th>
+                                                                    <th id="pr6nameHead" class="text-center">***</th>
+                                                                    <th id="pr7nameHead" class="text-center">***</th>
+                                                                    <th id="pr8nameHead" class="text-center">***</th>
+                                                                    <th id="pr9nameHead" class="text-center">***</th>
+                                                                    <th class="text-center">تعداد</th>
+                                                                    <th class="text-center">مبلغ</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="ParametrsThatCreated">
+                        
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
-
-
                                                 <button disabled id="CreatePorductsParamFinalSave" type="submit"
                                                     class="btn btn-success"><i class="fa fa-plus"></i> ایجاد کلیه
                                                     پارامتر ها برای کالای انتخابی
