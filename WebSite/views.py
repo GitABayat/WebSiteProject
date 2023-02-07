@@ -203,8 +203,12 @@ class ProductsList(ListView):
         context['group_parent_name_l1'] = ProductsGroups.objects.all().filter(glevel=1)
         context['cat'] = Productscategory.objects.all().filter(cparentid=0)
 
-        file = open('/home/avashb/Projects/PY9.txt', 'r', encoding='UTF-8')
-        context['file'] = file.read()
+        file = open('/home/avashb/Projects/PY9.txt', 'r')
+        py09 = []
+        for info in file.read():
+            py09.append(info)
+        context['file'] = py09
+
         return context
 
 
@@ -238,63 +242,70 @@ class CreateProductsParametrs(ListView):
         CheckRowID = JoinPidAndParametrs.objects.filter(Pid=int(RowID))
         if len(CheckRowID) == 0:
             for a in paramlist:
-
-                pd = Productscategory.objects.filter(cparentid=int(a), cparentid__gt = 0).values_list('id', 'cparentid')
+                pd = Productscategory.objects.filter(cparentid=int(a), cparentid__gt = 0).values_list('id', 'cparentid', 'cname')
                 if len(pd) > 0:
-                    prname = []
                     for lpd in pd:
-                        catinfo = Productscategory.objects.filter(id=lpd[0], cparentid__gt = 0).values_list('cname', 'id')
-                        prname.append(catinfo)
                         if len(paramlist) == 1:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p0 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
-                                p0.save()
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[2])
+                                p1.save()
 
                         if len(paramlist) == 2:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[2])
                                 p1.save()
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]), Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
+                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=lpd[2])
                                     p1.save()
 
                         if len(paramlist) == 3:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[2])
                                 p1.save()
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
                                     p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=lpd[2])
                                     p1.save()
                             elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2=0))
+                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
                                 for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(lpd[0]), 
+                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), 
-                                    Param2_Level=int(lpd[1]))
+                                    Param2_Level=int(lpd[1]), 
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=lpd[2])
                                     p2.save()
 
                         if len(paramlist) == 4:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[1])
                                 p1.save()
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
                                     p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=lpd[2])
                                     p1.save()
                             elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
                                 for b in a:
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), 
+                                    Param2_Level=int(lpd[1]), 
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
@@ -303,24 +314,31 @@ class CreateProductsParametrs(ListView):
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
                                     Param2=int(b.Param2), Param3=int(lpd[0]),
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
+                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=lpd[2])
                                     p2.save()
 
                         if len(paramlist) == 5:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[2])
                                 p1.save()
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
                                     p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=lpd[2])
                                     p1.save()
                             elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
                                 for b in a:
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), 
+                                    Param2_Level=int(lpd[1]), 
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
@@ -329,7 +347,9 @@ class CreateProductsParametrs(ListView):
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
                                     Param2=int(b.Param2), Param3=int(lpd[0]),
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
+                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
@@ -339,24 +359,32 @@ class CreateProductsParametrs(ListView):
                                     Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
                                     Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
+                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=b.Param3_Name,
+                                    Param4_Name=lpd[2])
                                     p2.save()
 
                         if len(paramlist) == 6:
                             if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
+                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]),
+                                Param0_Name=lpd[2])
                                 p1.save()
                             elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
                                 for b in a:
                                     p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=lpd[2])
                                     p1.save()
                             elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
                                 for b in a:
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
+                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), 
+                                    Param2_Level=int(lpd[1]), 
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
@@ -365,7 +393,9 @@ class CreateProductsParametrs(ListView):
                                     p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
                                     Param2=int(b.Param2), Param3=int(lpd[0]),
                                     Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
+                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
@@ -375,7 +405,10 @@ class CreateProductsParametrs(ListView):
                                     Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
                                     Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
+                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=b.Param3_Name,
+                                    Param4_Name=lpd[2])
                                     p2.save()
                             elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
                                 a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
@@ -387,325 +420,14 @@ class CreateProductsParametrs(ListView):
                                     Param0_Level=int(b.Param0_Level),
                                     Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
                                     Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(lpd[1]))
+                                    Param5_Level=int(lpd[1]),
+                                    Param0_Name=b.Param0_Name, Param1_Name=b.Param1_Name,
+                                    Param2_Name=b.Param2_Name, Param3_Name=b.Param3_Name,
+                                    Param4_Name=b.Param4_Name, Param5_Name=lpd[2]
+                                    )
                                     p5.save()
 
-                        if len(paramlist) == 7:
-                            if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
-                                p1.save()
-                            elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
-                                for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
-                                    p1.save()
-                            elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
-                                 Q(Param3=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
-                                    Param2=int(b.Param2), Param3=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
-                                    Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[6]) and int(paramlist[6]) > 0 and int(paramlist[6]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
-                                    p5.save()
-
-                        if len(paramlist) == 8:
-                            if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
-                                p1.save()
-                            elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
-                                for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
-                                    p1.save()
-                            elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
-                                 Q(Param3=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
-                                    Param2=int(b.Param2), Param3=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
-                                    Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[6]) and int(paramlist[6]) > 0 and int(paramlist[6]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[7]) and int(paramlist[7]) > 0 and int(paramlist[7]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(lpd[1]))
-                                    p5.save()
-
-                        if len(paramlist) == 9:
-                            if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
-                                p1.save()
-                            elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
-                                for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
-                                    p1.save()
-                            elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
-                                 Q(Param3=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
-                                    Param2=int(b.Param2), Param3=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
-                                    Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[6]) and int(paramlist[6]) > 0 and int(paramlist[6]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[7]) and int(paramlist[7]) > 0 and int(paramlist[7]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[8]) and int(paramlist[8]) > 0 and int(paramlist[8]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(b.Param7), Param8=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(b.Param7_Level), Param8_Level=int(lpd[1]))
-                                    p5.save()
-
-                        if len(paramlist) == 10:
-                            if int(paramlist[0]) and int(paramlist[0]) > 0 and int(paramlist[0]) == int(lpd[1]):
-                                p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(lpd[0]), Param0_Level=int(lpd[1]))
-                                p1.save()
-                            elif int(paramlist[1]) and int(paramlist[1]) > 0 and int(paramlist[1]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0))
-                                for b in a:
-                                    p0 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(lpd[1]))
-                                    p0.save()
-                            elif int(paramlist[2]) and int(paramlist[2]) > 0 and int(paramlist[2]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0))
-                                for b in a:
-                                    p1 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), Param2=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level), Param2_Level=int(lpd[1]))
-                                    p1.save()
-                            elif int(paramlist[3]) and int(paramlist[3]) > 0 and int(paramlist[3]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0),
-                                 Q(Param3=0))
-                                for b in a:
-                                    p2 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1), 
-                                    Param2=int(b.Param2), Param3=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level), Param1_Level=int(b.Param1_Level),
-                                    Param2_Level=int(b.Param2_Level), Param3_Level=int(lpd[1]))
-                                    p2.save()
-                            elif int(paramlist[4]) and int(paramlist[4]) > 0 and int(paramlist[4]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0))
-                                for b in a:
-                                    p3 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), Param1=int(b.Param1),
-                                    Param2=int(b.Param2), Param3=int(b.Param3), Param4=int(lpd[0]), 
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(lpd[1]))
-                                    p3.save()
-                            elif int(paramlist[5]) and int(paramlist[5]) > 0 and int(paramlist[5]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), 
-                                Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0))
-                                for b in a:
-                                    p4 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(lpd[1]))
-                                    p4.save()
-                            elif int(paramlist[6]) and int(paramlist[6]) > 0 and int(paramlist[6]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0))
-                                for b in a:
-                                    p5 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(lpd[1]))
-                                    p5.save()
-                            elif int(paramlist[7]) and int(paramlist[7]) > 0 and int(paramlist[7]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0))
-                                for b in a:
-                                    p6 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(lpd[1]))
-                                    p6.save()
-                            elif int(paramlist[8]) and int(paramlist[8]) > 0 and int(paramlist[8]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8=0))
-                                for b in a:
-                                    p7 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(b.Param7), Param8=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(b.Param7_Level), Param8_Level=int(lpd[1]))
-                                    p7.save()
-
-                            elif int(paramlist[9]) and int(paramlist[9]) > 0 and int(paramlist[9]) == int(lpd[1]):
-                                a = JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8__gt=0), Q(Param9=0))
-                                for b in a:
-                                    p8 = JoinPidAndParametrs(Pid=int(RowID), Param0=int(b.Param0), 
-                                    Param1=int(b.Param1), Param2=int(b.Param2), Param3=int(b.Param3), 
-                                    Param4=int(b.Param4), Param5=int(b.Param5), Param6=int(b.Param6), 
-                                    Param7=int(b.Param7), Param8=int(b.Param8), Param9=int(lpd[0]),
-                                    Param0_Level=int(b.Param0_Level),
-                                    Param1_Level=int(b.Param1_Level), Param2_Level=int(b.Param2_Level), 
-                                    Param3_Level=int(b.Param3_Level), Param4_Level=int(b.Param4_Level),
-                                    Param5_Level=int(b.Param5_Level), Param6_Level=int(b.Param6_Level), 
-                                    Param7_Level=int(b.Param7_Level), Param8_Level=int(b.Param8_Level), 
-                                    Param9_Level=int(lpd[1]))
-                                    p8.save()
-
+                        
             if len(paramlist) == 2:           
                 JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0)).delete()
             if len(paramlist) == 3:
@@ -726,40 +448,7 @@ class CreateProductsParametrs(ListView):
                 JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3=0)).delete()
                 JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0)).delete()
                 JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0)).delete()
-            if len(paramlist) == 7:
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0)).delete()
-            if len(paramlist) == 8:
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0)).delete()
-            if len(paramlist) == 9:
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8=0)).delete()
-            if len(paramlist) == 10:
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8=0)).delete()
-                JoinPidAndParametrs.objects.filter(Q(Pid=int(RowID)), Q(Param0__gt=0), Q(Param1__gt=0), Q(Param2__gt=0), Q(Param3__gt=0), Q(Param4__gt=0), Q(Param5__gt=0), Q(Param6__gt=0), Q(Param7__gt=0), Q(Param8__gt=0), Q(Param9=0)).delete()
+            
         else:
             errorhtml = 'برای این کالا قبلا تعداد {rows} ردیف ایجاد شده است آیا مایل به ایجاد سایر ردیف ها هستید ؟'.format(rows=len(CheckRowID))
 
@@ -777,39 +466,28 @@ class ShowResultOfParamCreate(ListView):
     def get(self, request):
         RowID = request.GET.get('rowid')
         html = ''
-
+        pr0__header_name = ''
+        pr1__header_name = ''
+        pr2__header_name = ''
+        pr3__header_name = ''
+        pr4__header_name = ''
+        pr5__header_name = ''
+        
         prheader_name = JoinPidAndParametrs.objects.filter(Pid=RowID).values_list('Param0_Level'
-        ,'Param1_Level', 'Param2_Level', 'Param3_Level', 'Param4_Level', 'Param5_Level', 
-        'Param6_Level', 'Param7_Level', 'Param8_Level', 'Param9_Level').first()
+        ,'Param1_Level', 'Param2_Level', 'Param3_Level', 'Param4_Level', 'Param5_Level').first()
 
         if prheader_name != None:
-            pr0__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[0]), cparentid = 0)
-            pr1__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[1]), cparentid = 0)
-            pr2__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[2]), cparentid = 0)
-            pr3__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[3]), cparentid = 0)
-            pr4__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[4]), cparentid = 0)
-            pr5__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[5]), cparentid = 0)
-            pr6__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[6]), cparentid = 0)
-            pr7__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[7]), cparentid = 0)
-            pr8__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[8]), cparentid = 0)
-            pr9__header_name = Productscategory.objects.values('cname').filter(id=int(prheader_name[9]), cparentid = 0)
+            pr0__header_name = Productscategory.objects.get(id=int(prheader_name[0]), cparentid = 0).cname
+            pr1__header_name = Productscategory.objects.get(id=int(prheader_name[1]), cparentid = 0).cname
+            pr2__header_name = Productscategory.objects.get(id=int(prheader_name[2]), cparentid = 0).cname
+            pr3__header_name = Productscategory.objects.get(id=int(prheader_name[3]), cparentid = 0).cname
+            pr4__header_name = Productscategory.objects.get(id=int(prheader_name[4]), cparentid = 0).cname
+            pr5__header_name = Productscategory.objects.get(id=int(prheader_name[5]), cparentid = 0).cname
 
 
-            prlist = JoinPidAndParametrs.objects.filter(Pid=int(RowID)).values_list('Param0','Param1','Param2','Param3','Param4','Param5','Param6','Param7','Param8','Param9')
+            prlist = JoinPidAndParametrs.objects.filter(Pid=int(RowID)).values_list('Param0_Name','Param1_Name','Param2_Name','Param3_Name','Param4_Name','Param5_Name')
+            product_name = Products.objects.get(id=int(RowID)).name
             for pr in prlist:
-                pro_name = Products.objects.get(id=int(RowID)).name
-                pr0__name = Productscategory.objects.get(id=int(pr[0])).cname
-                pr1__name = Productscategory.objects.get(id=int(pr[1])).cname
-                pr2__name = Productscategory.objects.get(id=int(pr[2])).cname
-                pr3__name = Productscategory.objects.get(id=int(pr[3])).cname
-                pr4__name = Productscategory.objects.get(id=int(pr[4])).cname
-                pr5__name = Productscategory.objects.get(id=int(pr[5])).cname
-                pr6__name = Productscategory.objects.get(id=int(pr[6])).cname
-                pr7__name = Productscategory.objects.get(id=int(pr[7])).cname
-                pr8__name = Productscategory.objects.get(id=int(pr[8])).cname
-                pr9__name = Productscategory.objects.get(id=int(pr[9])).cname
-
-
                 html += """
                     <tr>\
                         <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{rowid}"></td>\
@@ -819,29 +497,20 @@ class ShowResultOfParamCreate(ListView):
                         <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr3}"></td>\
                         <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr4}"></td>\
                         <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr5}"></td>\
-                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr6}"></td>\
-                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr7}"></td>\
-                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr8}"></td>\
-                        <td><input type="text" class="d-inline fw-bold text-center form-control col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value="{pr9}"></td>\
                         <td><input type="number" class="d-inline form-control fw-bold text-center col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
                         <td><input type="number" class="d-inline form-control fw-bold text-center col-xl-2 col-lg-2 col-md-4 col-sm-6 col-xs-12" value=""></td>\
                     </tr>\
-                    """.format(rowid=pro_name, pr0=pr0__name, pr1=pr1__name, pr2=pr2__name, pr3=pr3__name,
-                            pr4=pr4__name, pr5=pr5__name, pr6=pr6__name, pr7=pr7__name, pr8=pr8__name, pr9=pr9__name)
+                    """.format(rowid=product_name, pr0=pr[0], pr1=pr[1], pr2=pr[2], pr3=pr[3], pr4=pr[4], pr5=pr[5])
 
 
         data = {
             'html': html,
-            'prname0': pr0__header_name[0]['cname'],
-            'prname1': pr1__header_name[0]['cname'],
-            'prname2': pr2__header_name[0]['cname'],
-            'prname3': pr3__header_name[0]['cname'],
-            'prname4': pr4__header_name[0]['cname'],
-            'prname5': pr5__header_name[0]['cname'],
-            'prname6': pr6__header_name[0]['cname'],
-            'prname7': pr7__header_name[0]['cname'],
-            'prname8': pr8__header_name[0]['cname'],
-            'prname9': pr9__header_name[0]['cname']
+            'prname0': pr0__header_name,
+            'prname1': pr1__header_name,
+            'prname2': pr2__header_name,
+            'prname3': pr3__header_name,
+            'prname4': pr4__header_name,
+            'prname5': pr5__header_name
         }
         return JsonResponse(data)
 

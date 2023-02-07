@@ -288,10 +288,20 @@
                                                 {% endfor %}
 
                                             </div>
-                                            <div class="modal-footer">
+                                            <div class="modal-footer ">
+                                                <div class="border text-danger p-1 rounded shadow">
+                                                <label for="deletekeys"> <i class="fa fa-trash"></i> حذف : </label>
+                                                <select id="deletekeys" class="float-right p-1">
+                                                    <option id="Empty" value="#" selected>------</option>
+                                                    <option value="#" >حذف انتخابی</option>
+                                                    <option value="#" >
+                                                             حذف کلیه پارامتر ها
+                                                    </option>
+                                                </select>
                                                 <button id="DeletePorductsParam" type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-trash"></i> حذف کلیه پارامتر ها
-                                                </button>
+                                                    حذف
+                                               </button>
+                                            </div>
                                                 <button id="CreatePorductsParam" type="submit" class="btn btn-success">
                                                     <i class="fa fa-plus"></i> ایجاد ردیف های پارامتر ها
                                                 </button>
@@ -299,8 +309,7 @@
                                             <div >
                                                 <div class="card ShowParamList">
                                                     <div class="card-body" style="overflow-y: auto; height: 300px">
-                                                        <table class="table table-striped table-bordered table-hover table-bg-light shadow text-dark fw-bold"
-                                                            style="width: 2048px; overflow-x: auto;">
+                                                        <table id="MasterTable" class="table table-striped table-bordered table-hover table-bg-light shadow" style="width: 100%;">
                                                             <thead>
                                                                 <tr>
                                                                     <th class="text-center">کالا</th>
@@ -310,10 +319,6 @@
                                                                     <th id="pr3nameHead" class="text-center">***</th>
                                                                     <th id="pr4nameHead" class="text-center">***</th>
                                                                     <th id="pr5nameHead" class="text-center">***</th>
-                                                                    <th id="pr6nameHead" class="text-center">***</th>
-                                                                    <th id="pr7nameHead" class="text-center">***</th>
-                                                                    <th id="pr8nameHead" class="text-center">***</th>
-                                                                    <th id="pr9nameHead" class="text-center">***</th>
                                                                     <th class="text-center">تعداد</th>
                                                                     <th class="text-center">مبلغ</th>
                                                                 </tr>
